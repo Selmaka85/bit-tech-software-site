@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FutureTechToggle } from "@/components/FutureTechToggle";
+import { FutureTechToggle } from "@/components/FutureTech";
 import { navLinks, siteConfig } from "@/lib/site-data";
 
 export function Header() {

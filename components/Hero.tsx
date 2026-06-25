@@ -1,4 +1,4 @@
-import { FutureTechHeroConsole } from "@/components/FutureTechHeroConsole";
+import { FutureTechHeroConsole } from "@/components/FutureTech";
 import { siteConfig } from "@/lib/site-data";
 
 export function Hero() {

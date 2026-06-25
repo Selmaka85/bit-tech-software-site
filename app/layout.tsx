@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FutureTechShell } from "@/components/FutureTechShell";
+import { FutureTechShell } from "@/components/FutureTech";
 import { JsonLd } from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site-data";
 import { homeSeo } from "@/lib/seo-pages";
@@ -40,9 +40,9 @@ export default function RootLayout({
     <html lang="en-GB" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: futureTechBootScript }} />
-        <JsonLd />
       </head>
       <body>
+        <JsonLd />
         <FutureTechShell>{children}</FutureTechShell>
       </body>
     </html>
