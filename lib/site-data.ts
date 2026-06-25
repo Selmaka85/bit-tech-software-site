@@ -3,7 +3,7 @@ export const siteConfig = {
   brand: "Bit-Tech Software",
   title: "AI-Native SaaS Architect & Builder (Solo)",
   description:
-    "I design and ship complete SaaS products solo — from architecture and implementation to production deployment, security hardening, and stabilization.",
+    "AI-assisted SaaS products, automation tools and production-ready web applications for UK small businesses, founders and existing SaaS teams.",
   url: "https://bit-tech-software.co.uk",
   email: "info@bit-tech-software.co.uk",
   phone: "+44 7985 440909",
@@ -430,12 +430,23 @@ export const proofPoints = [
 ] as const;
 
 export const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
-  { href: "#stack", label: "Stack" },
-  { href: "#care", label: "Care" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#scope", label: "Scope" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#work", label: "Work" },
+  { href: "/#services", label: "Services" },
+  { href: "/#stack", label: "Stack" },
+  { href: "/#care", label: "Care" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#scope", label: "Scope" },
+  { href: "/#contact", label: "Contact" },
+] as const;
+
+export const footerSeoLinks = [
+  { href: "/services/ai-automation-for-small-business", label: "AI automation UK" },
+  { href: "/services/custom-saas-development", label: "Custom SaaS UK" },
+  { href: "/services/mvp-development", label: "MVP developer UK" },
+  { href: "/services/saas-rescue-stabilisation", label: "SaaS rescue UK" },
+  { href: "/services/saas-maintenance-care", label: "SaaS maintenance UK" },
+  { href: "/services/custom-dashboard-development", label: "Custom dashboards UK" },
+  { href: "/case-studies/best-football-predictions", label: "Case study" },
+  { href: "/locations/uk", label: "UK coverage" },
 ] as const;

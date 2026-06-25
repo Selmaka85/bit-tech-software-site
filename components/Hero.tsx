@@ -25,9 +25,9 @@ export function Hero() {
             </h1>
 
             <p className="hero-lead mt-6 text-lg leading-relaxed text-slate-300 sm:text-xl">
-              I design and ship complete SaaS products solo — from idea to
-              production. Architecture, implementation, automation, security
-              hardening, deployment, and post-launch stabilization.
+              AI automation and custom SaaS development for UK small businesses
+              and founders — from scoped MVP builds to production deployment,
+              rescue, and post-launch care.
             </p>
 
             <p className="hero-sub mt-4 text-base leading-relaxed text-slate-400">
@@ -69,7 +69,7 @@ export function Hero() {
           {[
             { label: "Focus", value: "Reliability & business outcomes" },
             { label: "Delivery", value: "End-to-end, solo, accountable" },
-            { label: "Clients", value: "Founders & existing SaaS products" },
+            { label: "Clients", value: "UK SMEs, founders & SaaS teams" },
           ].map((item) => (
             <div key={item.label} className="glass-card p-5">
               <dt className="text-xs uppercase tracking-wider text-slate-500">

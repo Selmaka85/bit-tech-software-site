@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { proofPoints, siteConfig } from "@/lib/site-data";
 import { SectionHeading } from "./SectionHeading";
 
@@ -33,6 +34,13 @@ export function WorkSection() {
                 Visit live site
                 <span aria-hidden="true">→</span>
               </a>
+              <Link
+                href="/case-studies/best-football-predictions"
+                className="mt-3 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-accent"
+              >
+                Read full case study
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
 
             <div className="grid gap-px bg-surface-border sm:grid-cols-3">

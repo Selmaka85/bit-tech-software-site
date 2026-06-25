@@ -36,7 +36,7 @@ export function Header() {
           <FutureTechToggle />
 
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden rounded-full bg-accent px-4 py-2 text-sm font-medium text-surface transition hover:bg-accent-muted sm:inline-flex ft-button-primary"
           >
             Get in touch
@@ -79,7 +79,7 @@ export function Header() {
             <div className="mt-2 flex flex-col gap-3">
               <FutureTechToggle />
               <a
-                href="#contact"
+                href="/#contact"
                 className="inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-surface"
                 onClick={() => setOpen(false)}
               >
