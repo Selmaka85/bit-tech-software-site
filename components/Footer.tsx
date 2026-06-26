@@ -12,9 +12,6 @@ export function Footer() {
             <p className="font-semibold text-white">{siteConfig.name}</p>
             <p className="mt-1 text-sm text-slate-400">{siteConfig.brand}</p>
             <p className="mt-1 text-sm text-slate-500">{siteConfig.location}</p>
-            <p className="mt-3 text-sm text-slate-500">
-              Serving small businesses across the UK · Based in Greater Manchester
-            </p>
           </div>
 
           <div>
@@ -65,8 +62,7 @@ export function Footer() {
 
       <div className="border-t border-surface-border/60">
         <div className="section-shell py-4 text-center text-xs text-slate-500">
-          © {year} {siteConfig.brand}. BEng Software Engineering (2:1), London
-          Metropolitan University.
+          © {year} {siteConfig.brand}. All rights reserved.
         </div>
       </div>
     </footer>

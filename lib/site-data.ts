@@ -1,26 +1,42 @@
 export const siteConfig = {
   name: "Teodor Catalin Bitica",
   brand: "Bit-Tech Software",
-  title: "AI-Native SaaS Architect & Builder (Solo)",
+  title: "AI-Native SaaS Architect & Builder",
+  pitch:
+    "I ship full-stack SaaS products solo — architecture, implementation, deployment, and stabilization. " +
+    "No account manager layer. No hand-off to a junior. " +
+    "You get senior execution from spec to production.",
   description:
-    "AI-assisted SaaS products, automation tools and production-ready web applications for UK small businesses, founders and existing SaaS teams.",
+    "Solo SaaS architect for UK founders and small businesses — full-stack products from architecture to production deployment, rescue, and post-launch care.",
   url: "https://bit-tech-software.co.uk",
   email: "info@bit-tech-software.co.uk",
   phone: "+44 7985 440909",
   phoneDisplay: "07985 440909",
-  location: "Little Hulton, Manchester, UK",
+  location: "Greater Manchester, UK",
   linkedin: "https://www.linkedin.com/in/teodor-catalin-bitica/",
   liveProduct: {
     name: "BestFootballPredictions.co.uk",
     url: "https://bestfootballpredictions.co.uk/",
-    tagline: "Live statistical analysis platform — auth, billing, pipelines, security, cloud deployment.",
+    tagline:
+      "Founder and sole architect — full-stack AI SaaS with XGBoost pipelines, Stripe billing, drift detection, and self-healing infrastructure in production.",
+  },
+} as const;
+
+export const heroCta = {
+  primary: { label: "Discuss your project", href: "#contact" },
+  secondary: { label: "Start with an Audit — from £595", href: "#pricing" },
+  tertiary: {
+    label: "View live product →",
+    href: "https://bestfootballpredictions.co.uk/",
+    external: true,
   },
 } as const;
 
 export const pricingPositioning = {
-  headline: "Lean solo builds on a proven stack — scoped delivery, not a full agency team.",
+  headline: "Senior solo execution — scoped delivery, not an agency team.",
   subline:
-    "Pricing is typically 35–50% below comparable UK freelance and studio quotes for the same scoped deliverables — because delivery is solo, stack-standardized, and AI-assisted.",
+    "You work directly with the engineer who architects, builds, and deploys your product. " +
+    "Stack-standardized, AI-assisted delivery — without account-manager overhead or junior hand-offs.",
 } as const;
 
 export const pricingRates = {
@@ -167,8 +183,10 @@ export const projectPackages = [
     name: "Audit + Architecture Blueprint",
     duration: "3–5 days",
     price: "£595 – £1,150",
-    priceNote: undefined,
-    bestFor: "Founders who need clarity before spending £5k–£30k on the wrong build.",
+    priceNote:
+      "This exact process was used before architecting BestFootballPredictions.co.uk — a production ML SaaS shipped solo.",
+    bestFor:
+      "Clarity before you spend £5k–£30k on the wrong stack — independent review before a full build.",
     summaryFeatures: [
       "Architecture and stack recommendation",
       "Must-have / later / avoid feature split",
@@ -189,14 +207,15 @@ export const projectPackages = [
       "Advanced market research",
       "Unlimited follow-up support",
     ],
-    highlight: false,
+    highlight: true,
   },
   {
     name: "MVP Sprint",
     duration: "3–5 weeks",
     price: "£3,500 – £6,950",
     priceNote: "Scoped sprint — core features defined before work starts.",
-    bestFor: "Founders validating a SaaS idea with real users — focused workflow, not unlimited features.",
+    bestFor:
+      "Validate with real users — focused delivery, scoped before start, not unlimited features.",
     summaryFeatures: [
       "Core workflow (3–6 main features, scoped)",
       "Frontend + backend + database",
@@ -228,7 +247,7 @@ export const projectPackages = [
       "24/7 support",
       "Unlimited features after sprint start",
     ],
-    highlight: true,
+    highlight: false,
   },
   {
     name: "Production SaaS Build",
@@ -237,7 +256,7 @@ export const projectPackages = [
     priceNote:
       "Final quote depends on scope, integrations, complexity, and support requirements.",
     bestFor:
-      "Founders who need a production-ready SaaS foundation: billing, admin, automation, deployment, security hardening, and operational stability.",
+      "Production-ready from launch — billing, automation, security, and operational stability.",
     summaryFeatures: [
       "Everything in MVP Sprint, production-grade",
       "Subscriptions, jobs, resilience layers",
@@ -278,7 +297,8 @@ export const projectPackages = [
     duration: "Scoped engagement",
     price: "£1,500 – £4,200",
     priceNote: "Read-only access preferred for initial audit where possible.",
-    bestFor: "Live products that need a production doctor — not a full rebuild disguised as a quick fix.",
+    bestFor:
+      "Production doctor — read the system, find what's broken, fix it clean. No open-ended scope.",
     summaryFeatures: [
       "Logs, routing, DB, API, hosting audit",
       "Critical fixes on defined issues",
@@ -317,6 +337,7 @@ export const carePlans = [
       "Uptime checks and backup verification",
       "Monthly dependency and security review",
       "Small fixes within included hours",
+      "Scheduled maintenance — P1 incident response not included (see Standard or Priority)",
       "Email support (business hours, UK)",
     ],
     highlight: false,
@@ -358,7 +379,7 @@ export const slaSeverities = [
   {
     level: "P1 Critical",
     example: "App down, payments broken, data-loss risk",
-    basic: "5 business days",
+    basic: "Not included",
     standard: "2 business days",
     priority: "24 business hours",
   },
@@ -396,28 +417,31 @@ export const carePlanTerms = [
 
 export const workPrinciples = [
   {
-    title: "Scope-first",
-    description: "Clear objective, architecture, and milestone plan before code.",
-  },
-  {
-    title: "Incremental delivery",
-    description: "Build in stages with validation at each step.",
-  },
-  {
-    title: "Reliability over vanity",
-    description: "Business continuity and uptime — not just shipping features.",
-  },
-  {
-    title: "Handover-ready",
+    title: "Solo accountability. Senior execution.",
     description:
-      "Clean repo, docs, deployment notes, and runbook guidance — you can leave anytime, but staying is easier.",
+      "No account managers. No hand-offs to juniors. Every architecture decision and production line is mine — you talk to the engineer building your product.",
+  },
+  {
+    title: "Production-first from day one.",
+    description:
+      "MVPs that are not ready for real users are prototypes. Every build includes deployment, smoke testing, and a stabilization window. I do not ship and disappear.",
+  },
+  {
+    title: "Scope discipline. No scope creep.",
+    description:
+      "Every engagement starts with defined scope. Change requests are transparent and quoted separately — you always know what you are paying for and why.",
+  },
+  {
+    title: "Build once. Maintain properly.",
+    description:
+      "Optional monthly care plans keep your product stable after launch. Handover notes and architecture docs are included in every delivery — not an afterthought.",
   },
 ] as const;
 
 export const bestFit = [
-  "Founders who need an MVP or production SaaS without hiring a full internal team.",
-  "Existing products needing stabilization, hardening, or operational reliability.",
-  "API-heavy products that require resilience under third-party failure.",
+  "Founders without a dev team who need MVP or production SaaS built and shipped without hiring and managing a full team.",
+  "Existing SaaS with reliability issues, performance problems, or technical debt blocking growth.",
+  "API-heavy products that need fallback logic, retry strategies, and resilience when third-party services fail.",
 ] as const;
 
 export const proofPoints = [

@@ -74,7 +74,7 @@ function ProjectPackageCard({
     >
       {pkg.highlight ? (
         <span className="mb-4 inline-flex w-fit rounded-full bg-accent-glow px-3 py-1 text-xs font-medium text-accent">
-          Popular entry point
+          Recommended starting point
         </span>
       ) : null}
 

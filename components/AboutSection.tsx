@@ -1,4 +1,4 @@
-import { bestFit, workPrinciples } from "@/lib/site-data";
+import { bestFit, siteConfig, workPrinciples } from "@/lib/site-data";
 import { SectionHeading } from "./SectionHeading";
 
 export function AboutSection() {
@@ -14,17 +14,11 @@ export function AboutSection() {
 
         <div className="space-y-8">
           <div className="glass-card p-6 sm:p-8">
-            <p className="leading-relaxed text-slate-300">
-              I am an AI-native SaaS architect and solo builder delivering
-              full-stack products from idea to production. My focus is
-              reliability, security, and real business outcomes — not just code
-              output.
-            </p>
+            <p className="leading-relaxed text-slate-300">{siteConfig.pitch}</p>
             <p className="mt-4 leading-relaxed text-slate-400">
               BEng Software Engineering (Upper Second Class Honours), London
-              Metropolitan University. Based in Greater Manchester, building
-              production systems with modern stacks and AI-assisted engineering
-              workflows.
+              Metropolitan University. Based in Greater Manchester — production
+              systems with modern stacks and AI-assisted engineering workflows.
             </p>
           </div>
 

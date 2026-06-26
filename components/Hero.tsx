@@ -1,8 +1,8 @@
 import { FutureTechHeroConsole } from "@/components/FutureTech";
-import { siteConfig } from "@/lib/site-data";
+import { heroCta, siteConfig } from "@/lib/site-data";
 
 export function Hero() {
-  const title = "AI-Native SaaS Architect & Builder";
+  const title = siteConfig.title;
 
   return (
     <section className="hero-section relative overflow-hidden border-b border-surface-border">
@@ -25,13 +25,11 @@ export function Hero() {
             </h1>
 
             <p className="hero-lead mt-6 text-lg leading-relaxed text-slate-300 sm:text-xl">
-              AI automation and custom SaaS development for UK small businesses
-              and founders — from scoped MVP builds to production deployment,
-              rescue, and post-launch care.
+              {siteConfig.pitch}
             </p>
 
             <p className="hero-sub mt-4 text-base leading-relaxed text-slate-400">
-              Recently founded and launched{" "}
+              Founder of{" "}
               <a
                 href={siteConfig.liveProduct.url}
                 target="_blank"
@@ -40,24 +38,31 @@ export function Hero() {
               >
                 {siteConfig.liveProduct.name}
               </a>{" "}
-              — a live, fully automated platform running in production with auth,
-              billing, data pipelines, and cloud deployment.
+              — a fully automated AI SaaS live in production. XGBoost ML
+              pipelines, Stripe billing, Hetzner infrastructure, Cloudflare CDN.
+              Same architecture I deliver for clients.
             </p>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <a
-                href={siteConfig.liveProduct.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={heroCta.primary.href}
                 className="ft-button-primary inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-surface transition hover:bg-accent-muted"
               >
-                View live product
+                {heroCta.primary.label}
               </a>
               <a
-                href="#contact"
+                href={heroCta.secondary.href}
                 className="ft-button-secondary inline-flex items-center justify-center rounded-full border border-surface-border bg-surface-raised px-6 py-3 text-sm font-semibold text-white transition hover:border-slate-500"
               >
-                Discuss your project
+                {heroCta.secondary.label}
+              </a>
+              <a
+                href={heroCta.tertiary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-2 py-3 text-sm font-medium text-slate-400 transition hover:text-accent"
+              >
+                {heroCta.tertiary.label}
               </a>
             </div>
           </div>
@@ -69,7 +74,7 @@ export function Hero() {
           {[
             { label: "Focus", value: "Reliability & business outcomes" },
             { label: "Delivery", value: "End-to-end, solo, accountable" },
-            { label: "Clients", value: "UK SMEs, founders & SaaS teams" },
+            { label: "Clients", value: "Founders and SaaS teams" },
           ].map((item) => (
             <div key={item.label} className="glass-card p-5">
               <dt className="text-xs uppercase tracking-wider text-slate-500">
