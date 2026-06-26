@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { FutureTechShell } from "@/components/FutureTech";
 import { JsonLd } from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site-data";
@@ -44,6 +45,7 @@ export default function RootLayout({
       <body>
         <JsonLd />
         <FutureTechShell>{children}</FutureTechShell>
+        <Analytics />
       </body>
     </html>
   );
