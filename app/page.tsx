@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AiDiscipline } from "@/components/AiDiscipline";
 import { AboutSection } from "@/components/AboutSection";
 import { CareSection } from "@/components/CareSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -36,6 +37,7 @@ export default function HomePage() {
         <AboutSection />
         <WorkSection />
         <ServicesSection />
+        <AiDiscipline />
         <StackSection />
         <CareSection />
         <ScopeSection />

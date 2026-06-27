@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.brand,
     title: homeSeo.metaTitle,
-    description: homeSeo.metaDescription,
+    description: homeSeo.openGraphDescription,
   },
   twitter: {
     card: "summary_large_image",
     title: homeSeo.metaTitle,
-    description: homeSeo.metaDescription,
+    description: homeSeo.openGraphDescription,
   },
   robots: { index: true, follow: true },
 };

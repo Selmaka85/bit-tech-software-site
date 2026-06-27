@@ -14,9 +14,11 @@ export type SeoContentPage = {
 };
 
 export const homeSeo = {
-  metaTitle: "AI Automation & SaaS Developer UK | Bit-Tech Software",
+  metaTitle: "AI-Assisted SaaS & MVP Developer UK | Bit-Tech Software",
   metaDescription:
-    "Bit-Tech Software builds AI-assisted SaaS products, automation tools, dashboards and production-ready web applications for UK small businesses, founders and existing SaaS teams. Solo delivery, clear scope, deployment and post-launch care.",
+    "AI-assisted SaaS development for UK founders, startups and SMEs. Custom SaaS builds, MVPs and AI automations — scoped, production-ready delivery.",
+  openGraphDescription:
+    "Custom SaaS, MVPs and AI automations for UK founders and startups — structured agentic engineering workflows, solo delivery from Greater Manchester.",
 } as const;
 
 export const servicePages: readonly SeoContentPage[] = [

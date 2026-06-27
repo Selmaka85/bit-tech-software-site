@@ -2,47 +2,71 @@
 
 ## 1. Vercel (site)
 
-Repo: push `web/` to GitHub → import in [Vercel](https://vercel.com/new).
+Repo: https://github.com/Selmaka85/bit-tech-software-site — auto-deploy on push to `master`.
 
 - **Framework:** Next.js (auto-detected)
 - **Root directory:** `/` (repo root is the `web` app)
-- **Domain:** add `bit-tech-software.co.uk` and `www.bit-tech-software.co.uk` in Vercel → Project → Settings → Domains
+- **Domain:** `bit-tech-software.co.uk` + `www.bit-tech-software.co.uk` in Vercel → Domains
 
-Vercel will show DNS records. Typical setup at your domain registrar:
+### DNS setup (current: GoDaddy + Vercel DNS)
+
+1. **GoDaddy** → Domain → Nameservers → Custom:
+   - `ns1.vercel-dns.com`
+   - `ns2.vercel-dns.com`
+2. **Vercel** → Domains → `bit-tech-software.co.uk` → **DNS Records**
+
+Site records (managed by Vercel automatically + ALIAS):
 
 | Type | Name | Value |
 |------|------|--------|
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | `cname.vercel-dns.com` |
+| ALIAS | `@` | Vercel auto |
+| ALIAS/CNAME | `www` | `cname.vercel-dns.com` |
 
-(Use exact values from Vercel dashboard if different.)
+Use exact values from Vercel dashboard if different (IP may change).
 
-SSL is automatic once DNS propagates (often 5–60 minutes, up to 48h).
+SSL is automatic once DNS propagates (5–60 min, up to 48h).
 
-## 2. Microsoft 365 Email (info@bit-tech-software.co.uk)
+**Do not** add DNS records in GoDaddy when nameservers point to Vercel.
 
-In [Microsoft 365 Admin](https://admin.microsoft.com) → Setup → Domains → verify `bit-tech-software.co.uk`.
+---
 
-Add the DNS records M365 shows (typically):
+## 2. Email — ImprovMX (info@bit-tech-software.co.uk)
 
-| Type | Purpose |
-|------|---------|
-| MX | Mail routing |
-| TXT | SPF / domain verification |
-| CNAME | Autodiscover (optional) |
+Forward `info@bit-tech-software.co.uk` → personal inbox (Yahoo/Gmail). No M365 required.
 
-Create mailbox: **info@bit-tech-software.co.uk** (or alias forwarding to your Gmail if Essentials allows one mailbox).
+1. Sign up at [improvmx.com](https://improvmx.com)
+2. Add domain `bit-tech-software.co.uk`
+3. Alias: `info` → your personal email
+4. In **Vercel DNS Records** (same domain page), add:
 
-## 3. Optional: Cloudflare
+| Type | Name | Value | Priority |
+|------|------|--------|----------|
+| MX | `@` | `mx1.improvmx.com` | 10 |
+| MX | `@` | `mx2.improvmx.com` | 20 |
+| TXT | `@` | `v=spf1 include:spf.improvmx.com ~all` | — |
 
-If you move DNS to Cloudflare later: import records from registrar, proxy orange-cloud for web, DNS-only (grey) for MX/email.
+5. ImprovMX → DNS Records → **CHECK AGAIN** (all green)
+6. Test: send mail to `info@bit-tech-software.co.uk`
+
+**Do not** add `mx1.improvmx.com` as a Vercel Domain — only as MX records.
+
+---
+
+## 3. Optional: Resend (future contact form)
+
+For sending mail from code (contact form notifications): [resend.com](https://resend.com). Add DKIM/TXT records in Vercel DNS when implemented. Separate from ImprovMX receive path.
+
+---
 
 ## 4. Retire Wix
 
 After new site is live: Wix → redirect old URL to `https://bit-tech-software.co.uk`.
 
+---
+
 ## 5. Verify
 
 - https://bit-tech-software.co.uk loads
 - https://www.bit-tech-software.co.uk redirects
-- Email send/receive test to info@bit-tech-software.co.uk
+- Email receive test to info@bit-tech-software.co.uk
+- Google Search Console → submit `https://bit-tech-software.co.uk/sitemap.xml`

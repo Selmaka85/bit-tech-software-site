@@ -2,12 +2,12 @@ export const siteConfig = {
   name: "Teodor Catalin Bitica",
   brand: "Bit-Tech Software",
   title: "AI-Native SaaS Architect & Builder",
+  heroEyebrow: "AI-Assisted Engineering · UK-based · Production-focused",
   pitch:
-    "I ship full-stack SaaS products solo — architecture, implementation, deployment, and stabilization. " +
-    "No account manager layer. No hand-off to a junior. " +
-    "You get senior execution from spec to production.",
+    "I build full-stack SaaS products and AI automations using structured agentic engineering workflows — scoped, verified, deployed and maintained. " +
+    "No account manager layer. No hand-offs. No AI on autopilot.",
   description:
-    "Solo SaaS architect for UK founders and small businesses — full-stack products from architecture to production deployment, rescue, and post-launch care.",
+    "AI-assisted SaaS development for UK founders, startups and SMEs. Custom builds, MVPs and AI automations — scoped, verified, production-ready delivery.",
   url: "https://bit-tech-software.co.uk",
   email: "info@bit-tech-software.co.uk",
   phone: "+44 7985 440909",

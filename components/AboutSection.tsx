@@ -17,8 +17,9 @@ export function AboutSection() {
             <p className="leading-relaxed text-slate-300">{siteConfig.pitch}</p>
             <p className="mt-4 leading-relaxed text-slate-400">
               BEng Software Engineering (Upper Second Class Honours), London
-              Metropolitan University. Based in Greater Manchester — production
-              systems with modern stacks and AI-assisted engineering workflows.
+              Metropolitan University. Based in Greater Manchester — structured
+              workflows with verification at each step, the same discipline behind
+              my live product and client deliveries.
             </p>
           </div>
 

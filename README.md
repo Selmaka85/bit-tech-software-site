@@ -2,7 +2,9 @@
 
 Professional site for **Teodor Catalin Bitica** — AI-Native SaaS Architect & Builder.
 
-Built with Next.js 15, TypeScript, and Tailwind CSS. Content aligned with `Ce Pot face.md` and LinkedIn positioning.
+Built with Next.js 15, TypeScript, and Tailwind CSS. Content in `lib/site-data.ts` and `lib/seo-pages.ts`. Sync with root `Ce Pot face.md` when pricing changes.
+
+**Live:** https://bit-tech-software.co.uk
 
 ## Local development
 
@@ -16,11 +18,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy to Vercel
 
-1. Push the `web` folder to GitHub (or import repo in Vercel with root directory `web`).
-2. Import project in [Vercel](https://vercel.com).
-3. Framework preset: **Next.js**
-4. Add domain `bit-tech-software.co.uk` in Vercel → Domains.
-5. In Cloudflare DNS, point `@` and `www` to Vercel (CNAME or A records per Vercel instructions).
+1. Push to GitHub (`Selmaka85/bit-tech-software-site`) — auto-deploys on `master`.
+2. Domain + DNS: see [DEPLOY.md](./DEPLOY.md) (GoDaddy nameservers → Vercel DNS).
 
 ## Environment
 
@@ -30,15 +29,22 @@ No secrets required for the marketing site. Optional:
 NEXT_PUBLIC_BASE_URL=https://bit-tech-software.co.uk
 ```
 
-## Site sections
+## Routes
 
-- Hero + positioning (LinkedIn-aligned)
-- About + how I work
-- Proof of work (BestFootballPredictions.co.uk)
-- Services + stack
-- Pricing packages (GBP)
-- Contact
+| Path | Purpose |
+|------|---------|
+| `/` | Homepage |
+| `/services/*` | 6 SEO service pages |
+| `/case-studies/best-football-predictions` | Case study |
+| `/locations/uk` | UK location page |
+| `/sitemap.xml`, `/robots.txt` | SEO technical |
 
-## Edit content
+## Site sections (homepage)
 
-All copy and pricing live in `lib/site-data.ts`.
+Hero · About · Work · Services · Stack · Care · Pricing · Scope · Contact
+
+Optional **Future-Tech Mode** toggle (visual skin only — same content).
+
+## Email
+
+`info@bit-tech-software.co.uk` — ImprovMX forward (see DEPLOY.md).

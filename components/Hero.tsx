@@ -15,7 +15,7 @@ export function Hero() {
           <div className="max-w-3xl">
             <div className="hero-eyebrow mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-glow px-3 py-1 text-xs font-medium text-accent">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Solo builder · UK-based · Production-focused
+              {siteConfig.heroEyebrow}
             </div>
 
             <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
