@@ -636,66 +636,61 @@ html[data-theme="nocturne"] {
 }
 
 html[data-theme="nocturne"] body {
-  color: #eee4d8;
+  color: #f4efe6;
   font-family: Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif;
+  /* Solid like other modes — blood stays behind at z-1, not through UI */
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(163, 15, 45, 0.2), transparent 42%),
+    radial-gradient(ellipse at 50% -10%, rgba(163, 15, 45, 0.22), transparent 42%),
     radial-gradient(circle at 85% 15%, rgba(95, 145, 173, 0.1), transparent 28%),
     linear-gradient(165deg, #070609 0%, #0d0a0d 48%, #151014 100%);
 }
 
-/* Let blood show through (Future-style), keep type readable above FX */
-html[data-theme="nocturne"][data-nocturne-fx="on"] body {
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(163, 15, 45, 0.16), transparent 42%),
-    radial-gradient(circle at 85% 15%, rgba(95, 145, 173, 0.08), transparent 28%),
-    linear-gradient(
-      165deg,
-      rgba(7, 6, 9, 0.72) 0%,
-      rgba(13, 10, 13, 0.78) 48%,
-      rgba(21, 16, 20, 0.82) 100%
-    );
-}
-
-html[data-theme="nocturne"][data-nocturne-fx="on"] .glass-card {
-  background: rgba(21, 16, 20, 0.78);
-}
-
-html[data-theme="nocturne"][data-nocturne-fx="on"] .section-shell h1,
-html[data-theme="nocturne"][data-nocturne-fx="on"] .section-shell h2,
-html[data-theme="nocturne"][data-nocturne-fx="on"] .section-shell h3,
-html[data-theme="nocturne"][data-nocturne-fx="on"] .ft-glitch-title,
-html[data-theme="nocturne"][data-nocturne-fx="on"] p,
-html[data-theme="nocturne"][data-nocturne-fx="on"] li,
-html[data-theme="nocturne"][data-nocturne-fx="on"] a {
-  text-shadow: 0 1px 2px rgba(7, 6, 9, 0.85), 0 0 18px rgba(7, 6, 9, 0.45);
-}
-
 html[data-theme="nocturne"] header {
-  background: rgba(7, 6, 9, 0.92) !important;
+  background: rgba(7, 6, 9, 0.97) !important;
   border-bottom-color: rgba(184, 153, 88, 0.22) !important;
 }
 
 html[data-theme="nocturne"] .section-shell h1,
 html[data-theme="nocturne"] .section-shell h2,
+html[data-theme="nocturne"] .section-shell h3,
 html[data-theme="nocturne"] .ft-glitch-title {
   font-family: Georgia, "Palatino Linotype", Palatino, serif;
   letter-spacing: 0.01em;
   font-weight: 500;
-  color: #eee4d8 !important;
+  color: #f4efe6 !important;
 }
 
-html[data-theme="nocturne"] .text-slate-300,
-html[data-theme="nocturne"] .text-slate-400,
+html[data-theme="nocturne"] .text-slate-200,
+html[data-theme="nocturne"] .text-white {
+  color: #f4efe6 !important;
+}
+
+html[data-theme="nocturne"] .text-slate-300 {
+  color: #ddd6cb !important;
+}
+
+html[data-theme="nocturne"] .text-slate-400 {
+  color: #c4bdb2 !important;
+}
+
 html[data-theme="nocturne"] .text-slate-500 {
-  color: #b7b5bd !important;
+  color: #a39e96 !important;
 }
 
 html[data-theme="nocturne"] .glass-card {
   border-radius: 0.2rem;
-  border-color: rgba(184, 153, 88, 0.24);
-  background: rgba(21, 16, 20, 0.92);
-  box-shadow: 0 0 0 1px rgba(74, 11, 28, 0.4), inset 0 1px 0 rgba(238, 228, 216, 0.04);
+  border-color: rgba(184, 153, 88, 0.28);
+  background: rgb(21, 16, 20);
+  box-shadow: 0 0 0 1px rgba(74, 11, 28, 0.45), inset 0 1px 0 rgba(238, 228, 216, 0.05);
+}
+
+/* Keep section chrome solid where Tailwind uses translucent raised bands */
+html[data-theme="nocturne"] .bg-surface-raised\/30 {
+  background-color: rgb(21, 16, 20) !important;
+}
+
+html[data-theme="nocturne"] .bg-surface\/90 {
+  background-color: rgb(7, 6, 9) !important;
 }
 
 html[data-theme="nocturne"] .glass-card:hover {
@@ -761,7 +756,8 @@ html[data-theme="nocturne"] .theme-dial-trigger {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.55;
+  /* Visible in page edges/gutters; UI above stays solid */
+  opacity: 0.4;
   pointer-events: none;
   mix-blend-mode: normal;
 }
@@ -771,7 +767,7 @@ html[data-theme="nocturne"] .theme-dial-trigger {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.22;
+  opacity: 0.14;
   background:
     linear-gradient(180deg, transparent 0%, rgba(90, 10, 18, 0.35) 35%, rgba(55, 5, 12, 0.75) 100%) 7% 0 / 4px 42% no-repeat,
     linear-gradient(180deg, transparent 0%, rgba(110, 14, 24, 0.4) 48%, rgba(40, 4, 10, 0.85) 100%) 22% 0 / 2px 58% no-repeat,
@@ -797,29 +793,29 @@ html[data-theme="nocturne"] .theme-dial-trigger {
   position: absolute;
   pointer-events: none;
   font-size: 2.6rem;
-  opacity: 0.28;
+  opacity: 0.16;
   filter: grayscale(0.15) drop-shadow(0 0 14px rgba(208, 29, 63, 0.45));
   user-select: none;
 }
 
 .nocturne-skull-a { left: 1.2rem; bottom: 18%; transform: rotate(-12deg); }
-.nocturne-skull-b { right: 1.4rem; top: 22%; transform: rotate(14deg); opacity: 0.22; }
+.nocturne-skull-b { right: 1.4rem; top: 22%; transform: rotate(14deg); opacity: 0.12; }
 
 .nocturne-bat {
   position: absolute;
   pointer-events: none;
   font-size: 1.55rem;
-  opacity: 0.42;
+  opacity: 0.22;
   user-select: none;
   animation: nocturne-bat-fly 22s linear infinite;
   will-change: transform;
 }
 
 .nocturne-bat-a { top: 14%; left: -8%; animation-duration: 24s; }
-.nocturne-bat-b { top: 32%; left: -10%; animation-duration: 30s; animation-delay: -6s; opacity: 0.32; font-size: 1.25rem; }
-.nocturne-bat-c { top: 48%; left: -12%; animation-duration: 26s; animation-delay: -12s; opacity: 0.36; }
-.nocturne-bat-d { top: 22%; left: -14%; animation-duration: 34s; animation-delay: -18s; opacity: 0.3; font-size: 1.7rem; }
-.nocturne-bat-e { top: 62%; left: -9%; animation-duration: 28s; animation-delay: -4s; opacity: 0.34; font-size: 1.2rem; }
+.nocturne-bat-b { top: 32%; left: -10%; animation-duration: 30s; animation-delay: -6s; opacity: 0.16; font-size: 1.25rem; }
+.nocturne-bat-c { top: 48%; left: -12%; animation-duration: 26s; animation-delay: -12s; opacity: 0.18; }
+.nocturne-bat-d { top: 22%; left: -14%; animation-duration: 34s; animation-delay: -18s; opacity: 0.15; font-size: 1.7rem; }
+.nocturne-bat-e { top: 62%; left: -9%; animation-duration: 28s; animation-delay: -4s; opacity: 0.17; font-size: 1.2rem; }
 
 .nocturne-spider {
   position: absolute;
