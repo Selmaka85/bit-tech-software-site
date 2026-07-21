@@ -9,7 +9,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { createPortal } from "react-dom";
 import {
   LEGACY_FUTURE_KEY,
   NOCTURNE_FX_KEY,
@@ -290,8 +289,8 @@ function BloodDripCanvas() {
     };
 
     const draw = () => {
-      // Soft trail wash — wet glass persistence
-      ctx.fillStyle = "rgba(7, 6, 9, 0.085)";
+      // Soft trail wash — light enough that body text above stays readable
+      ctx.fillStyle = "rgba(7, 6, 9, 0.055)";
       ctx.fillRect(0, 0, width, height);
 
       for (const r of rivulets) {
@@ -449,11 +448,6 @@ function NocturneAmbientLayer() {
 
 function ThemeAmbient() {
   const { theme, nocturneFx } = useSiteTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (theme === "future") {
     return (
@@ -474,8 +468,9 @@ function ThemeAmbient() {
     );
   }
 
-  if (theme === "nocturne" && nocturneFx && mounted) {
-    return createPortal(<NocturneAmbientLayer />, document.body);
+  // Same stacking model as Future matrix: FX behind page content (z-10)
+  if (theme === "nocturne" && nocturneFx) {
+    return <NocturneAmbientLayer />;
   }
 
   return null;
@@ -602,8 +597,9 @@ export function ThemeShell({ children }: { children: ReactNode }) {
     <ThemeContext.Provider
       value={{ theme, setTheme, nocturneFx, setNocturneFx, toggleNocturneFx }}
     >
-      <div className="relative z-10">{children}</div>
+      {/* Ambient first (z~1) so blood/matrix sit behind readable content (z-10) */}
       <ThemeAmbient />
+      <div className="relative z-10">{children}</div>
     </ThemeContext.Provider>
   );
 }
