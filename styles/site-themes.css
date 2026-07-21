@@ -720,15 +720,16 @@ html[data-theme="nocturne"] .theme-dial-trigger {
   border-color: rgba(184, 153, 88, 0.35);
 }
 
-/* Nocturne ambient effects */
+/* Nocturne ambient effects — above page chrome, below theme dial (z ~100) */
 .nocturne-blood-canvas {
-  pointer-events: none;
+  pointer-events: none !important;
+  z-index: 35 !important;
 }
 
 .nocturne-fog {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 34;
   pointer-events: none;
   background:
     radial-gradient(ellipse at 20% 80%, rgba(95, 145, 173, 0.08), transparent 40%),
@@ -738,30 +739,68 @@ html[data-theme="nocturne"] .theme-dial-trigger {
 
 .nocturne-skull {
   position: fixed;
-  z-index: 2;
+  z-index: 36;
   pointer-events: none;
   font-size: 2.4rem;
-  opacity: 0.14;
+  opacity: 0.16;
   filter: grayscale(0.2) drop-shadow(0 0 12px rgba(208, 29, 63, 0.35));
   user-select: none;
 }
 
 .nocturne-skull-a { left: 1.2rem; bottom: 18%; transform: rotate(-12deg); }
-.nocturne-skull-b { right: 1.4rem; top: 22%; transform: rotate(14deg); opacity: 0.12; }
+.nocturne-skull-b { right: 1.4rem; top: 22%; transform: rotate(14deg); opacity: 0.14; }
 
 .nocturne-bat {
   position: fixed;
-  z-index: 2;
+  z-index: 36;
   pointer-events: none;
   font-size: 1.35rem;
-  opacity: 0.22;
+  opacity: 0.28;
   user-select: none;
   animation: nocturne-bat-fly 22s linear infinite;
 }
 
-.nocturne-bat-a { top: 18%; left: -8%; animation-duration: 26s; }
-.nocturne-bat-b { top: 42%; left: -10%; animation-duration: 32s; animation-delay: -8s; opacity: 0.16; font-size: 1.1rem; }
-.nocturne-bat-c { top: 68%; left: -12%; animation-duration: 28s; animation-delay: -14s; opacity: 0.18; }
+.nocturne-bat-a { top: 14%; left: -8%; animation-duration: 24s; }
+.nocturne-bat-b { top: 32%; left: -10%; animation-duration: 30s; animation-delay: -6s; opacity: 0.2; font-size: 1.1rem; }
+.nocturne-bat-c { top: 48%; left: -12%; animation-duration: 26s; animation-delay: -12s; opacity: 0.24; }
+.nocturne-bat-d { top: 22%; left: -14%; animation-duration: 34s; animation-delay: -18s; opacity: 0.18; font-size: 1.55rem; }
+.nocturne-bat-e { top: 62%; left: -9%; animation-duration: 28s; animation-delay: -4s; opacity: 0.22; font-size: 1.05rem; }
+
+.nocturne-spider {
+  position: fixed;
+  top: 0;
+  left: 1.25rem;
+  z-index: 37;
+  width: 2.5rem;
+  height: 3rem;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: nocturne-spider-drop 12s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.nocturne-web-thread {
+  display: block;
+  width: 1px;
+  flex: 1 1 auto;
+  min-height: 2rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(184, 153, 88, 0.55),
+    rgba(184, 153, 88, 0.12)
+  );
+  box-shadow: 0 0 4px rgba(208, 29, 63, 0.15);
+}
+
+.nocturne-spider-body {
+  display: block;
+  font-size: 1.45rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+  animation: nocturne-spider-sway 3.2s ease-in-out infinite;
+}
 
 @keyframes nocturne-fog-drift {
   from { transform: translate3d(0, 0, 0); }
@@ -776,11 +815,42 @@ html[data-theme="nocturne"] .theme-dial-trigger {
   100% { transform: translate3d(112vw, 14px, 0) scaleX(-1); }
 }
 
+@keyframes nocturne-spider-drop {
+  0%,
+  100% {
+    height: 3.25rem;
+  }
+  40% {
+    height: 11rem;
+  }
+  55% {
+    height: 9.5rem;
+  }
+  75% {
+    height: 13rem;
+  }
+}
+
+@keyframes nocturne-spider-sway {
+  0%,
+  100% {
+    transform: translateX(-1px) rotate(-6deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(7deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nocturne-blood-canvas,
   .nocturne-fog,
-  .nocturne-bat { display: none !important; }
-  .nocturne-skull { opacity: 0.08; }
+  .nocturne-bat,
+  .nocturne-spider {
+    display: none !important;
+  }
+  .nocturne-skull {
+    opacity: 0.08;
+  }
 }
 
 /* Dial polish extras */

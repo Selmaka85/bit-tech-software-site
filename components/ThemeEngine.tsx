@@ -142,6 +142,7 @@ function BloodDripCanvas() {
 
     let width = 0;
     let height = 0;
+    let dpr = 1;
     let frameId = 0;
     type Drop = {
       x: number;
@@ -157,36 +158,45 @@ function BloodDripCanvas() {
     const spawn = (x: number, y?: number): Drop => ({
       x,
       y: y ?? -Math.random() * height,
-      speed: 1.6 + Math.random() * 3.4,
-      len: 14 + Math.random() * 38,
-      w: 1.4 + Math.random() * 2.4,
-      sway: (Math.random() - 0.5) * 0.35,
+      speed: 2 + Math.random() * 4.2,
+      len: 22 + Math.random() * 52,
+      w: 2 + Math.random() * 3.2,
+      sway: (Math.random() - 0.5) * 0.4,
       phase: Math.random() * Math.PI * 2,
     });
 
     const resize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      // Matrix-style columns of blood streams (overlay-dense, still readable)
-      const columns = Math.max(22, Math.floor(width / 42));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const columns = Math.max(28, Math.floor(width / 36));
       drops = [];
       for (let i = 0; i < columns; i++) {
-        const baseX = (i + 0.5) * (width / columns) + (Math.random() - 0.5) * 18;
+        const baseX =
+          (i + 0.5) * (width / columns) + (Math.random() - 0.5) * 20;
         drops.push(spawn(baseX, Math.random() * height));
-        if (Math.random() > 0.55) {
-          drops.push(spawn(baseX + (Math.random() - 0.5) * 10, Math.random() * height));
+        if (Math.random() > 0.4) {
+          drops.push(
+            spawn(baseX + (Math.random() - 0.5) * 12, Math.random() * height),
+          );
         }
       }
     };
 
     const draw = () => {
-      // Soft trail wash — like bloody-drops stream overlays
-      ctx.fillStyle = "rgba(7, 6, 9, 0.07)";
+      // Trail wash without burying red under opaque dark
+      ctx.fillStyle = "rgba(7, 6, 9, 0.045)";
       ctx.fillRect(0, 0, width, height);
 
       for (const drop of drops) {
-        drop.phase += 0.04;
-        const x = drop.x + Math.sin(drop.phase) * drop.sway * 6;
+        drop.phase += 0.045;
+        const x = drop.x + Math.sin(drop.phase) * drop.sway * 8;
         const gradient = ctx.createLinearGradient(
           x,
           drop.y,
@@ -194,9 +204,9 @@ function BloodDripCanvas() {
           drop.y + drop.len,
         );
         gradient.addColorStop(0, "rgba(208, 29, 63, 0)");
-        gradient.addColorStop(0.25, "rgba(208, 29, 63, 0.45)");
-        gradient.addColorStop(0.7, "rgba(163, 15, 45, 0.9)");
-        gradient.addColorStop(1, "rgba(90, 6, 22, 0.95)");
+        gradient.addColorStop(0.2, "rgba(232, 48, 78, 0.55)");
+        gradient.addColorStop(0.65, "rgba(163, 15, 45, 0.95)");
+        gradient.addColorStop(1, "rgba(90, 6, 22, 1)");
         ctx.strokeStyle = gradient;
         ctx.lineWidth = drop.w;
         ctx.lineCap = "round";
@@ -205,14 +215,13 @@ function BloodDripCanvas() {
         ctx.lineTo(x, drop.y + drop.len);
         ctx.stroke();
 
-        // Tip bead / splash head
-        ctx.fillStyle = "rgba(232, 48, 78, 0.9)";
+        ctx.fillStyle = "rgba(255, 70, 96, 0.95)";
         ctx.beginPath();
         ctx.ellipse(
           x,
           drop.y + drop.len,
-          drop.w * 1.25,
-          drop.w * 1.85,
+          drop.w * 1.35,
+          drop.w * 2,
           0,
           0,
           Math.PI * 2,
@@ -221,7 +230,7 @@ function BloodDripCanvas() {
 
         drop.y += drop.speed;
         if (drop.y > height + 50) {
-          Object.assign(drop, spawn(drop.x + (Math.random() - 0.5) * 24, -40));
+          Object.assign(drop, spawn(drop.x + (Math.random() - 0.5) * 28, -50));
         }
       }
 
@@ -240,7 +249,7 @@ function BloodDripCanvas() {
 
   return (
     <canvas
-      className="nocturne-blood-canvas pointer-events-none fixed inset-0 z-[1] opacity-[0.42]"
+      className="nocturne-blood-canvas pointer-events-none fixed inset-0 z-[35] opacity-[0.55]"
       aria-hidden="true"
       ref={canvasRef}
     />
@@ -266,6 +275,16 @@ function NocturneAmbient() {
       </div>
       <div className="nocturne-bat nocturne-bat-c" aria-hidden="true">
         🦇
+      </div>
+      <div className="nocturne-bat nocturne-bat-d" aria-hidden="true">
+        🦇
+      </div>
+      <div className="nocturne-bat nocturne-bat-e" aria-hidden="true">
+        🦇
+      </div>
+      <div className="nocturne-spider" aria-hidden="true">
+        <span className="nocturne-web-thread" />
+        <span className="nocturne-spider-body">🕷️</span>
       </div>
     </>
   );
@@ -379,8 +398,9 @@ export function ThemeShell({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <ThemeAmbient />
       <div className="relative z-10">{children}</div>
+      {/* Ambient overlays after content so blood/bats paint above opaque sections */}
+      <ThemeAmbient />
     </ThemeContext.Provider>
   );
 }

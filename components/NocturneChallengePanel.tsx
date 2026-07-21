@@ -8,18 +8,20 @@ export function NocturneChallengePanel() {
   const { theme, setTheme } = useSiteTheme();
   const [announce, setAnnounce] = useState("");
   const liveRef = useRef<HTMLParagraphElement>(null);
-  const isNocturne = theme === "nocturne";
 
-  const applyNocturne = useCallback(() => {
-    setTheme("nocturne");
-    setAnnounce("Nocturne theme activated");
-    // Re-trigger screen readers if already announced once
+  const exitNocturne = useCallback(() => {
+    setTheme("core");
+    setAnnounce("Nocturne theme deactivated");
     window.setTimeout(() => {
       if (liveRef.current) {
-        liveRef.current.textContent = "Nocturne theme activated";
+        liveRef.current.textContent = "Nocturne theme deactivated";
       }
     }, 0);
   }, [setTheme]);
+
+  if (theme !== "nocturne") {
+    return null;
+  }
 
   return (
     <section
@@ -36,7 +38,10 @@ export function NocturneChallengePanel() {
           shadow-[0_0_80px_rgba(124,58,237,0.12)]
         "
       >
-        <div className="pointer-events-none absolute inset-0 -z-30" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-30"
+          aria-hidden="true"
+        >
           <Image
             src="/nocturne/nocturne-castle.webp"
             alt=""
@@ -111,7 +116,7 @@ export function NocturneChallengePanel() {
                 tracking-[0.32em] text-violet-300
               "
             >
-              Design Modes
+              Design Modes · Nocturne
             </p>
 
             <h2
@@ -129,7 +134,7 @@ export function NocturneChallengePanel() {
                   bg-clip-text text-transparent
                 "
               >
-                I dare you.
+                You&apos;re in.
               </span>
             </h2>
 
@@ -139,17 +144,16 @@ export function NocturneChallengePanel() {
                 text-zinc-300/90 sm:text-lg
               "
             >
-              Switch to Nocturne — the cinematic gothic identity of Bit-Tech
-              Software.
+              Crimson Nocturne is active — same product, darker world. Exit
+              anytime.
             </p>
           </div>
 
           <div className="flex flex-col items-start md:items-end">
             <button
               type="button"
-              onClick={applyNocturne}
-              disabled={isNocturne}
-              aria-pressed={isNocturne}
+              onClick={exitNocturne}
+              aria-pressed="true"
               className="
                 group inline-flex min-h-14 items-center gap-7
                 rounded-xl
@@ -167,23 +171,18 @@ export function NocturneChallengePanel() {
                 focus-visible:ring-violet-300
                 focus-visible:ring-offset-4
                 focus-visible:ring-offset-[#070611]
-                disabled:cursor-default
-                disabled:opacity-90
-                disabled:hover:translate-y-0
               "
             >
-              {isNocturne ? "Nocturne active" : "Apply Nocturne"}
-              {!isNocturne ? (
-                <span
-                  aria-hidden="true"
-                  className="
-                    text-xl transition-transform duration-300
-                    group-hover:translate-x-1
-                  "
-                >
-                  →
-                </span>
-              ) : null}
+              Exit Nocturne
+              <span
+                aria-hidden="true"
+                className="
+                  text-xl transition-transform duration-300
+                  group-hover:translate-x-1
+                "
+              >
+                →
+              </span>
             </button>
 
             <p
@@ -194,7 +193,7 @@ export function NocturneChallengePanel() {
             >
               Same product. Same structure.
               <br />
-              A darker world.
+              Tap again to leave the dark.
             </p>
           </div>
         </div>
