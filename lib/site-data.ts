@@ -23,8 +23,14 @@ export const siteConfig = {
 } as const;
 
 export const heroCta = {
-  primary: { label: "Discuss your project", href: "#contact" },
-  secondary: { label: "Start with an Audit — from £595", href: "#pricing" },
+  primary: {
+    label: "Book a Free 20-Minute Call",
+    href: "#contact",
+  },
+  secondary: {
+    label: "Book a Technical Consultation",
+    href: "#contact-consult",
+  },
   tertiary: {
     label: "View live product →",
     href: "https://bestfootballpredictions.co.uk/",
@@ -37,11 +43,64 @@ export const pricingPositioning = {
   subline:
     "You work directly with the engineer who architects, builds, and deploys your product. " +
     "Stack-standardized, AI-assisted delivery — without account-manager overhead or junior hand-offs.",
+  packagesNote:
+    "SaaS and MVP development — scoped individually. Projects are estimated based on requirements, integrations, complexity and delivery timescale.",
 } as const;
 
+/** Public commercial ladder — keep labels simple; no “first N projects” copy on site. */
+export const engagementOffers = [
+  {
+    id: "free-call",
+    label: "Free Initial Consultation",
+    price: "20 minutes",
+    summary:
+      "A short, no-obligation conversation to understand your project, goals, current challenges, budget and expected timeline.",
+    bullets: [
+      "What I build and how I work",
+      "What I may be able to deliver",
+      "Whether the project is a good technical fit",
+      "What the next practical step would be",
+    ],
+    excluded:
+      "This initial call does not include a detailed technical audit, architecture design or written project specification.",
+  },
+  {
+    id: "consultation",
+    label: "Technical Consultation & Solution Planning",
+    price: "£50/hour",
+    summary:
+      "Deeper technical discussion when you need analysis, architecture and a clear implementation path — typically from one hour.",
+    bullets: [
+      "MVP or SaaS requirements",
+      "Architecture and stack selection",
+      "Integrations and automation",
+      "Production and deployment planning",
+      "Security, scalability and technical risks",
+      "Scope, priorities and implementation roadmap",
+    ],
+    excluded: null,
+  },
+  {
+    id: "development",
+    label: "Development",
+    price: "£40/hour",
+    summary:
+      "Development, integrations, debugging, automation, deployment and ongoing technical work.",
+    bullets: [
+      "Full MVP and SaaS projects can also be quoted at a fixed price after the scope has been agreed.",
+    ],
+    excluded: null,
+  },
+] as const;
+
 export const pricingRates = {
-  hourly: "£45 – £70",
-  dayRate: "£320 – £520",
+  freeCall: "Free · 20 minutes",
+  freeCallLabel: "Free Initial Consultation",
+  consultation: "£50/hour",
+  consultationLabel: "Technical Consultation",
+  hourly: "£40/hour",
+  hourlyLabel: "Development",
+  dayRate: "£320/day",
   paymentStructure: "40% upfront · 40% milestone · 20% final delivery",
 } as const;
 
@@ -182,9 +241,9 @@ export const projectPackages = [
   {
     name: "Audit + Architecture Blueprint",
     duration: "3–5 days",
-    price: "£595 – £1,150",
+    price: "From £595",
     priceNote:
-      "This exact process was used before architecting BestFootballPredictions.co.uk — a production ML SaaS shipped solo.",
+      "Written discovery before a build. Same process used before architecting BestFootballPredictions.co.uk.",
     bestFor:
       "Clarity before you spend £5k–£30k on the wrong stack — independent review before a full build.",
     summaryFeatures: [
@@ -212,8 +271,9 @@ export const projectPackages = [
   {
     name: "MVP Sprint",
     duration: "3–5 weeks",
-    price: "£3,500 – £6,950",
-    priceNote: "Scoped sprint — core features defined before work starts.",
+    price: "From £3,500",
+    priceNote:
+      "Scoped sprint — core features defined before work starts. Quote confirmed after scope.",
     bestFor:
       "Validate with real users — focused delivery, scoped before start, not unlimited features.",
     summaryFeatures: [
@@ -252,7 +312,7 @@ export const projectPackages = [
   {
     name: "Production SaaS Build",
     duration: "6–10 weeks",
-    price: "From £7,900 – £16,500",
+    price: "From £7,900",
     priceNote:
       "Final quote depends on scope, integrations, complexity, and support requirements.",
     bestFor:
@@ -295,7 +355,7 @@ export const projectPackages = [
   {
     name: "Stabilization / Rescue",
     duration: "Scoped engagement",
-    price: "£1,500 – £4,200",
+    price: "From £1,500",
     priceNote: "Read-only access preferred for initial audit where possible.",
     bestFor:
       "Production doctor — read the system, find what's broken, fix it clean. No open-ended scope.",
@@ -329,7 +389,7 @@ export const carePlans = [
   {
     name: "Care Basic",
     duration: "Monthly",
-    price: "£350 – £495 / mo",
+    price: "From £350 / mo",
     audience: "Small app or low-risk live product",
     responseTarget: "5 business days (triage)",
     includedHours: "~1 hour small fixes / month",
@@ -345,7 +405,7 @@ export const carePlans = [
   {
     name: "Care Standard",
     duration: "Monthly",
-    price: "£750 – £1,095 / mo",
+    price: "From £750 / mo",
     audience: "Live SaaS / MVP in production",
     responseTarget: "2 business days (triage)",
     includedHours: "~3 hours fixes / month",
@@ -361,7 +421,7 @@ export const carePlans = [
   {
     name: "Care Priority",
     duration: "Monthly",
-    price: "£1,395 – £1,995 / mo",
+    price: "From £1,395 / mo",
     audience: "Business-critical SaaS",
     responseTarget: "24 business hours (triage)",
     includedHours: "~6 hours fixes / month",
@@ -410,7 +470,7 @@ export const carePlanTerms = [
   "Care plans include monitoring, maintenance, updates, backup checks, security reviews, and limited support hours — not unlimited new features or full rebuilds.",
   "Third-party outages and out-of-scope work are excluded unless agreed separately.",
   "Unused support time does not roll over unless explicitly stated in your agreement.",
-  "Additional work beyond included hours is billed at the agreed hourly rate (£45–£70).",
+  "Additional work beyond included hours is billed at the development rate (£40/hour).",
   "Response targets mean when triage/acknowledgement begins — not guaranteed resolution time.",
   "Major new features are quoted separately — not included in monthly care.",
 ] as const;

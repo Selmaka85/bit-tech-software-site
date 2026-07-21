@@ -1,6 +1,7 @@
 import {
   carePlanTerms,
   carePlans,
+  engagementOffers,
   pricingPositioning,
   pricingRates,
   projectPackages,
@@ -169,18 +170,63 @@ export function PricingSection() {
       <div className="section-shell">
         <SectionHeading
           id="pricing"
-          eyebrow="Packages"
-          title="Clear pricing, scoped delivery"
+          eyebrow="How engagement works"
+          title="Free fit call. Paid planning. Scoped builds."
           description={pricingPositioning.headline}
         />
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">
           {pricingPositioning.subline}
         </p>
 
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {engagementOffers.map((offer) => (
+            <article key={offer.id} className="glass-card flex flex-col p-6">
+              <h3 className="text-lg font-semibold text-white">{offer.label}</h3>
+              <p className="mt-3 text-2xl font-semibold text-accent">
+                {offer.price}
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-slate-400">
+                {offer.summary}
+              </p>
+              <ul className="mt-5 flex-1 space-y-2.5">
+                {offer.bullets.map((bullet) => (
+                  <li
+                    key={bullet}
+                    className="flex gap-3 text-sm leading-relaxed text-slate-400"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+              {offer.excluded ? (
+                <p className="mt-5 text-xs leading-relaxed text-slate-500">
+                  {offer.excluded}
+                </p>
+              ) : null}
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-6 text-sm text-slate-500">
+          Optional day rate:{" "}
+          <span className="font-medium text-slate-300">
+            {pricingRates.dayRate}
+          </span>
+          . Payment on fixed builds:{" "}
+          <span className="font-medium text-slate-300">
+            {pricingRates.paymentStructure}
+          </span>
+          .
+        </p>
+
         <div className="mt-14">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-300">
-            Project packages
+            Starting package prices
           </h3>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-500">
+            {pricingPositioning.packagesNote}
+          </p>
           <div className="mt-6 grid gap-5 lg:grid-cols-2">
             {projectPackages.map((pkg) => (
               <ProjectPackageCard key={pkg.name} pkg={pkg} />
@@ -255,27 +301,6 @@ export function PricingSection() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="glass-card p-5">
-            <p className="text-sm text-slate-500">Hourly</p>
-            <p className="mt-1 text-lg font-semibold text-white">
-              {pricingRates.hourly}
-            </p>
-          </div>
-          <div className="glass-card p-5">
-            <p className="text-sm text-slate-500">Day rate (optional)</p>
-            <p className="mt-1 text-lg font-semibold text-white">
-              {pricingRates.dayRate}
-            </p>
-          </div>
-          <div className="glass-card p-5 sm:col-span-2 lg:col-span-1">
-            <p className="text-sm text-slate-500">Payment structure</p>
-            <p className="mt-1 text-sm font-medium leading-relaxed text-slate-300">
-              {pricingRates.paymentStructure}
-            </p>
-          </div>
         </div>
       </div>
     </section>
