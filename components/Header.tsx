@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FutureTechToggle } from "@/components/FutureTech";
+import { ThemeDial } from "@/components/ThemeDial";
 import { navLinks, siteConfig } from "@/lib/site-data";
 
 export function Header() {
@@ -33,7 +33,7 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <FutureTechToggle />
+          <ThemeDial />
 
           <a
             href="/#contact"
@@ -77,7 +77,7 @@ export function Header() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3">
-              <FutureTechToggle />
+              <ThemeDial />
               <a
                 href="/#contact"
                 className="inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-surface"

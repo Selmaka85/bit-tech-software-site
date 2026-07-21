@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { FutureTechShell } from "@/components/FutureTech";
+import { ThemeShell } from "@/components/ThemeEngine";
 import { JsonLd } from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site-data";
 import { homeSeo } from "@/lib/seo-pages";
 import "./globals.css";
 import "../styles/future-tech.css";
+import "../styles/site-themes.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const futureTechBootScript = `(function(){try{var o=localStorage.getItem("bit-tech-future-tech-mode");if(o==="true"){document.documentElement.dataset.futureTech="true";}}catch(e){}})();`;
+const themeBootScript = `(function(){try{var k="bit-tech-site-theme";var legacy="bit-tech-future-tech-mode";var t=localStorage.getItem(k);var allowed=["core","future","executive","clinical","industrial","noir"];if(!t||allowed.indexOf(t)<0){t=localStorage.getItem(legacy)==="true"?"future":"core";}document.documentElement.dataset.theme=t;if(t==="future"){document.documentElement.dataset.futureTech="true";}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -37,13 +38,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" suppressHydrationWarning>
+    <html lang="en-GB" data-theme="core" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: futureTechBootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body>
         <JsonLd />
-        <FutureTechShell>{children}</FutureTechShell>
+        <ThemeShell>{children}</ThemeShell>
       </body>
     </html>
   );

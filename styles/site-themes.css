@@ -1,0 +1,705 @@
+/* Radial Theme Dial (Design Modes) + Executive / Clinical / Industrial / Noir.
+   Future skin: styles/future-tech.css (html[data-theme="future"]).
+   Core: :root defaults in globals.css (html[data-theme="core"]). */
+
+.theme-dial-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--surface-border-rgb) / 0.9);
+  background: rgb(var(--surface-raised-rgb) / 0.85);
+  color: rgb(148 163 184);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.theme-dial-trigger:hover {
+  color: rgb(226 232 240);
+  border-color: rgb(var(--accent-rgb) / 0.55);
+  box-shadow: 0 0 18px rgb(var(--accent-rgb) / 0.15);
+}
+
+.theme-dial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .theme-dial-overlay {
+    align-items: center;
+    padding: 1.25rem;
+  }
+}
+
+.theme-dial-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(2 6 14 / 0.72);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.theme-dial-modal {
+  position: relative;
+  z-index: 1;
+  width: min(56rem, 100%);
+  max-height: min(92vh, 52rem);
+  overflow: auto;
+  border-radius: 1.25rem 1.25rem 0.85rem 0.85rem;
+  border: 1px solid rgb(99 102 241 / 0.28);
+  background:
+    radial-gradient(circle at 20% 0%, rgb(99 102 241 / 0.16), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgb(34 197 94 / 0.08), transparent 35%),
+    linear-gradient(160deg, #0b1220 0%, #111827 55%, #0a0f1a 100%);
+  color: #e5e7eb;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
+  padding: 1.1rem 1.1rem 1.25rem;
+  animation: theme-dial-in 0.28s ease-out;
+}
+
+@keyframes theme-dial-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.theme-dial-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.theme-dial-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a78bfa;
+}
+
+.theme-dial-title {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.25rem, 3vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.theme-dial-sub {
+  margin: 0.45rem 0 0;
+  max-width: 36rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.theme-dial-close {
+  border-radius: 999px;
+  border: 1px solid rgb(148 163 184 / 0.35);
+  background: transparent;
+  color: #cbd5e1;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.theme-dial-body {
+  display: none;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.theme-dial-stage {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 22rem;
+  padding-top: 0.5rem;
+}
+
+.theme-dial-marker {
+  position: relative;
+  z-index: 2;
+  color: #a78bfa;
+  font-size: 1rem;
+  filter: drop-shadow(0 0 8px rgb(167 139 250 / 0.8));
+  margin-bottom: -0.35rem;
+}
+
+.theme-dial-wheel {
+  position: relative;
+  width: 19rem;
+  height: 19rem;
+  border-radius: 50%;
+  touch-action: none;
+  cursor: grab;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+}
+
+.theme-dial-wheel:active {
+  cursor: grabbing;
+  transition: none;
+}
+
+.theme-dial-ring {
+  position: absolute;
+  inset: 0.9rem;
+  border-radius: 50%;
+  border: 1px solid rgb(148 163 184 / 0.22);
+  box-shadow:
+    inset 0 0 40px rgb(99 102 241 / 0.12),
+    0 0 40px rgb(99 102 241 / 0.08);
+  background:
+    conic-gradient(
+      from -30deg,
+      rgb(59 130 246 / 0.2),
+      rgb(168 85 247 / 0.18),
+      rgb(34 197 94 / 0.14),
+      rgb(234 179 8 / 0.14),
+      rgb(244 63 94 / 0.16),
+      rgb(14 165 233 / 0.16),
+      rgb(59 130 246 / 0.2)
+    );
+  opacity: 0.55;
+}
+
+.theme-dial-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: -2.25rem 0 0 -2.25rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(99 102 241 / 0.45);
+  background: radial-gradient(circle at 35% 30%, #1e293b, #0b1220 70%);
+  box-shadow: 0 0 24px rgb(99 102 241 / 0.25);
+  color: #93c5fd;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.theme-dial-segment {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5.6rem;
+  margin: -2.6rem 0 0 -2.8rem;
+  border: 0;
+  background: transparent;
+  color: #cbd5e1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-dial-segment-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgb(148 163 184 / 0.25);
+  background: rgb(15 23 42 / 0.88);
+  padding: 0.45rem 0.35rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.theme-dial-segment-inner strong {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.theme-dial-segment-inner small {
+  font-size: 0.55rem;
+  color: #94a3b8;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.theme-dial-segment.is-active .theme-dial-segment-inner {
+  border-color: rgb(96 165 250 / 0.8);
+  color: #93c5fd;
+  box-shadow: 0 0 18px rgb(59 130 246 / 0.35);
+  background: rgb(30 41 59 / 0.95);
+}
+
+.theme-dial-hint {
+  margin: 0.85rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.theme-dial-detail {
+  width: min(16rem, 100%);
+  border-radius: 1rem;
+  border: 1px solid rgb(148 163 184 / 0.2);
+  background: rgb(15 23 42 / 0.75);
+  padding: 1rem 1.1rem;
+}
+
+.theme-dial-detail-label {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.theme-dial-detail-blurb {
+  margin: 0.55rem 0 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.theme-dial-detail ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.theme-dial-detail li {
+  position: relative;
+  padding-left: 1.15rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.theme-dial-detail li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+  font-size: 0.75rem;
+}
+
+.theme-dial-mobile {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.theme-dial-mobile-label {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.theme-dial-mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.theme-dial-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: left;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(148 163 184 / 0.28);
+  background: rgb(15 23 42 / 0.85);
+  color: #e2e8f0;
+  padding: 0.65rem 0.7rem;
+}
+
+.theme-dial-chip strong {
+  display: block;
+  font-size: 0.78rem;
+}
+
+.theme-dial-chip small {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+.theme-dial-chip.is-active {
+  border-color: rgb(96 165 250 / 0.75);
+  box-shadow: 0 0 0 1px rgb(59 130 246 / 0.25);
+}
+
+@media (min-width: 768px) {
+  .theme-dial-body {
+    display: flex;
+  }
+
+  .theme-dial-mobile {
+    display: none;
+  }
+
+  .theme-dial-modal {
+    border-radius: 1.25rem;
+    padding: 1.35rem 1.5rem 1.5rem;
+  }
+}
+
+/* ——— Core (explicit) ——— */
+html[data-theme="core"] {
+  color-scheme: dark;
+}
+
+/* ——— Executive ——— */
+html[data-theme="executive"] {
+  color-scheme: light;
+  --surface-rgb: 247 244 238;
+  --surface-raised-rgb: 255 253 249;
+  --surface-border-rgb: 214 205 190;
+  --accent-rgb: 26 58 92;
+  --accent-muted-rgb: 184 148 74;
+  --color-accent-glow: rgba(26, 58, 92, 0.1);
+  --color-accent-glow-strong: rgba(26, 58, 92, 0.22);
+  --color-orb-secondary: rgba(184, 148, 74, 0.12);
+  --grid-line: rgba(26, 58, 92, 0.05);
+  --hero-grid-size: 56px;
+}
+
+html[data-theme="executive"] body {
+  color: #1a2433;
+  font-family: "Segoe UI", Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(184, 148, 74, 0.12), transparent 42%),
+    linear-gradient(180deg, #f7f4ee 0%, #efe8dc 100%);
+}
+
+html[data-theme="executive"] header {
+  background: rgba(255, 253, 249, 0.92) !important;
+  border-bottom-color: rgba(214, 205, 190, 0.9) !important;
+}
+
+html[data-theme="executive"] .text-white,
+html[data-theme="executive"] .text-slate-200,
+html[data-theme="executive"] .section-shell h1,
+html[data-theme="executive"] .section-shell h2,
+html[data-theme="executive"] .section-shell h3 {
+  color: #142033 !important;
+}
+
+html[data-theme="executive"] .text-slate-300,
+html[data-theme="executive"] .text-slate-400,
+html[data-theme="executive"] .text-slate-500 {
+  color: #5b6575 !important;
+}
+
+html[data-theme="executive"] .glass-card {
+  border-radius: 0.35rem;
+  border-color: rgba(214, 205, 190, 0.95);
+  background: rgba(255, 253, 249, 0.92);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+html[data-theme="executive"] .ft-button-primary,
+html[data-theme="executive"] a.bg-accent {
+  background: #1a3a5c !important;
+  color: #f7f4ee !important;
+  border-radius: 0.25rem;
+}
+
+html[data-theme="executive"] .ft-button-secondary {
+  border-radius: 0.25rem;
+  border-color: #1a3a5c !important;
+  color: #1a3a5c !important;
+  background: transparent !important;
+}
+
+html[data-theme="executive"] .text-accent,
+html[data-theme="executive"] .hero-eyebrow {
+  color: #1a3a5c !important;
+}
+
+html[data-theme="executive"] .hero-eyebrow {
+  border-color: rgba(26, 58, 92, 0.25) !important;
+  background: rgba(26, 58, 92, 0.06) !important;
+}
+
+html[data-theme="executive"] footer {
+  background: #efe8dc;
+  border-top-color: #d6cdbe;
+}
+
+html[data-theme="executive"] .theme-dial-trigger {
+  color: #3d4a5c;
+}
+
+/* ——— Clinical ——— */
+html[data-theme="clinical"] {
+  color-scheme: light;
+  --surface-rgb: 246 249 251;
+  --surface-raised-rgb: 255 255 255;
+  --surface-border-rgb: 205 220 230;
+  --accent-rgb: 14 116 144;
+  --accent-muted-rgb: 8 145 178;
+  --color-accent-glow: rgba(14, 116, 144, 0.1);
+  --color-accent-glow-strong: rgba(14, 116, 144, 0.2);
+  --color-orb-secondary: rgba(45, 212, 191, 0.12);
+  --grid-line: rgba(14, 116, 144, 0.045);
+  --hero-grid-size: 48px;
+}
+
+html[data-theme="clinical"] body {
+  color: #1e293b;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(45, 212, 191, 0.1), transparent 36%),
+    linear-gradient(180deg, #f6f9fb 0%, #eef5f8 100%);
+}
+
+html[data-theme="clinical"] header {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom-color: rgba(205, 220, 230, 0.95) !important;
+}
+
+html[data-theme="clinical"] .text-white,
+html[data-theme="clinical"] .text-slate-200,
+html[data-theme="clinical"] .section-shell h1,
+html[data-theme="clinical"] .section-shell h2,
+html[data-theme="clinical"] .section-shell h3 {
+  color: #0f172a !important;
+}
+
+html[data-theme="clinical"] .text-slate-300,
+html[data-theme="clinical"] .text-slate-400,
+html[data-theme="clinical"] .text-slate-500 {
+  color: #64748b !important;
+}
+
+html[data-theme="clinical"] .glass-card {
+  border-radius: 1.25rem;
+  border-color: rgba(205, 220, 230, 0.95);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 24px rgba(14, 116, 144, 0.05);
+}
+
+html[data-theme="clinical"] .ft-button-primary,
+html[data-theme="clinical"] a.bg-accent {
+  background: #0e7490 !important;
+  color: #fff !important;
+  border-radius: 999px;
+}
+
+html[data-theme="clinical"] .text-accent,
+html[data-theme="clinical"] .hero-eyebrow {
+  color: #0e7490 !important;
+}
+
+html[data-theme="clinical"] .hero-eyebrow {
+  border-color: rgba(14, 116, 144, 0.2) !important;
+  background: rgba(14, 116, 144, 0.06) !important;
+}
+
+html[data-theme="clinical"] footer {
+  background: #eef5f8;
+}
+
+html[data-theme="clinical"] .theme-dial-trigger {
+  color: #475569;
+}
+
+/* ——— Industrial ——— */
+html[data-theme="industrial"] {
+  color-scheme: dark;
+  --surface-rgb: 18 18 18;
+  --surface-raised-rgb: 28 28 28;
+  --surface-border-rgb: 64 64 64;
+  --accent-rgb: 234 179 8;
+  --accent-muted-rgb: 202 138 4;
+  --color-accent-glow: rgba(234, 179, 8, 0.12);
+  --color-accent-glow-strong: rgba(234, 179, 8, 0.28);
+  --color-orb-secondary: rgba(120, 113, 108, 0.2);
+  --grid-line: rgba(234, 179, 8, 0.05);
+  --hero-grid-size: 40px;
+}
+
+html[data-theme="industrial"] body {
+  color: #e7e5e4;
+  font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(234, 179, 8, 0.04) 1px, transparent 1px),
+    linear-gradient(160deg, #121212 0%, #1c1917 55%, #0c0a09 100%);
+  background-size: 40px 40px, 40px 40px, auto;
+}
+
+html[data-theme="industrial"] header {
+  background: rgba(18, 18, 18, 0.94) !important;
+  border-bottom: 1px solid rgba(234, 179, 8, 0.2) !important;
+}
+
+html[data-theme="industrial"] .glass-card {
+  border-radius: 0.2rem;
+  border-color: rgba(87, 83, 78, 0.9);
+  background: rgba(28, 28, 28, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(234, 179, 8, 0.04);
+}
+
+html[data-theme="industrial"] .ft-button-primary,
+html[data-theme="industrial"] a.bg-accent {
+  background: #eab308 !important;
+  color: #121212 !important;
+  border-radius: 0.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+html[data-theme="industrial"] .ft-button-secondary {
+  border-radius: 0.15rem;
+  border-color: #eab308 !important;
+  color: #eab308 !important;
+}
+
+html[data-theme="industrial"] .section-shell h1,
+html[data-theme="industrial"] .section-shell h2 {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+html[data-theme="industrial"] .hero-eyebrow {
+  border-radius: 0.15rem;
+  border-color: rgba(234, 179, 8, 0.35) !important;
+  background: rgba(234, 179, 8, 0.08) !important;
+  color: #eab308 !important;
+}
+
+html[data-theme="industrial"] footer {
+  border-top-color: rgba(234, 179, 8, 0.2);
+}
+
+/* ——— Noir ——— */
+html[data-theme="noir"] {
+  color-scheme: dark;
+  --surface-rgb: 8 6 8;
+  --surface-raised-rgb: 18 12 16;
+  --surface-border-rgb: 74 40 52;
+  --accent-rgb: 190 140 110;
+  --accent-muted-rgb: 140 48 62;
+  --color-accent-glow: rgba(190, 140, 110, 0.12);
+  --color-accent-glow-strong: rgba(140, 48, 62, 0.35);
+  --color-orb-secondary: rgba(140, 48, 62, 0.18);
+  --grid-line: rgba(190, 140, 110, 0.04);
+  --hero-grid-size: 64px;
+}
+
+html[data-theme="noir"] body {
+  color: #f3ebe3;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(140, 48, 62, 0.28), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(190, 140, 110, 0.08), transparent 30%),
+    linear-gradient(165deg, #080608 0%, #120c10 48%, #1a0e14 100%);
+}
+
+html[data-theme="noir"] header {
+  background: rgba(8, 6, 8, 0.9) !important;
+  border-bottom-color: rgba(74, 40, 52, 0.85) !important;
+}
+
+html[data-theme="noir"] .section-shell h1,
+html[data-theme="noir"] .section-shell h2,
+html[data-theme="noir"] .ft-glitch-title {
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+
+html[data-theme="noir"] .glass-card {
+  border-radius: 0.15rem;
+  border-color: rgba(74, 40, 52, 0.9);
+  background: rgba(18, 12, 16, 0.88);
+  box-shadow: 0 0 0 1px rgba(190, 140, 110, 0.05);
+}
+
+html[data-theme="noir"] .ft-button-primary,
+html[data-theme="noir"] a.bg-accent {
+  background: #8c303e !important;
+  color: #f3ebe3 !important;
+  border-radius: 0.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+html[data-theme="noir"] .ft-button-secondary {
+  border-radius: 0.1rem;
+  border-color: rgba(190, 140, 110, 0.55) !important;
+  color: #be8c6e !important;
+}
+
+html[data-theme="noir"] .text-accent,
+html[data-theme="noir"] .hero-eyebrow {
+  color: #be8c6e !important;
+}
+
+html[data-theme="noir"] .hero-eyebrow {
+  border-radius: 0.1rem;
+  border-color: rgba(190, 140, 110, 0.3) !important;
+  background: rgba(140, 48, 62, 0.15) !important;
+}
+
+html[data-theme="noir"] footer {
+  border-top-color: rgba(74, 40, 52, 0.9);
+  background: #0c080a;
+}
+
+/* Smooth theme transitions */
+html[data-theme] body,
+html[data-theme] .glass-card,
+html[data-theme] header {
+  transition:
+    background-color 0.45s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-dial-modal,
+  .theme-dial-wheel,
+  html[data-theme] body,
+  html[data-theme] .glass-card,
+  html[data-theme] header {
+    animation: none !important;
+    transition: none !important;
+  }
+}
