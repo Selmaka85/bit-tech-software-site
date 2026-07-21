@@ -620,80 +620,104 @@ html[data-theme="industrial"] footer {
   border-top-color: rgba(234, 179, 8, 0.2);
 }
 
-/* â€”â€”â€” Noir â€”â€”â€” */
-html[data-theme="noir"] {
+/* --- Cathedral (Crimson Cathedral — replaced former Noir) --- */
+html[data-theme="cathedral"] {
   color-scheme: dark;
-  --surface-rgb: 8 6 8;
-  --surface-raised-rgb: 18 12 16;
+  --surface-rgb: 8 6 9;
+  --surface-raised-rgb: 23 16 21;
   --surface-border-rgb: 74 40 52;
-  --accent-rgb: 190 140 110;
-  --accent-muted-rgb: 140 48 62;
-  --color-accent-glow: rgba(190, 140, 110, 0.12);
-  --color-accent-glow-strong: rgba(140, 48, 62, 0.35);
-  --color-orb-secondary: rgba(140, 48, 62, 0.18);
-  --grid-line: rgba(190, 140, 110, 0.04);
+  --accent-rgb: 168 20 53;
+  --accent-muted-rgb: 220 35 77;
+  --color-accent-glow: rgba(220, 35, 77, 0.22);
+  --color-accent-glow-strong: rgba(168, 20, 53, 0.38);
+  --color-orb-secondary: rgba(194, 161, 93, 0.12);
+  --grid-line: rgba(194, 161, 93, 0.05);
   --hero-grid-size: 64px;
 }
 
-html[data-theme="noir"] body {
-  color: #f3ebe3;
-  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+html[data-theme="cathedral"] body {
+  color: #f2e9df;
+  font-family: Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif;
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(140, 48, 62, 0.28), transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(190, 140, 110, 0.08), transparent 30%),
-    linear-gradient(165deg, #080608 0%, #120c10 48%, #1a0e14 100%);
+    radial-gradient(ellipse at 50% -8%, rgba(168, 20, 53, 0.22), transparent 42%),
+    radial-gradient(circle at 88% 78%, rgba(194, 161, 93, 0.07), transparent 28%),
+    linear-gradient(165deg, #080609 0%, #100a0e 46%, #171015 100%);
 }
 
-html[data-theme="noir"] header {
-  background: rgba(8, 6, 8, 0.9) !important;
-  border-bottom-color: rgba(74, 40, 52, 0.85) !important;
+html[data-theme="cathedral"] header {
+  background: rgba(8, 6, 9, 0.92) !important;
+  border-bottom-color: rgba(194, 161, 93, 0.22) !important;
 }
 
-html[data-theme="noir"] .section-shell h1,
-html[data-theme="noir"] .section-shell h2,
-html[data-theme="noir"] .ft-glitch-title {
+html[data-theme="cathedral"] .section-shell h1,
+html[data-theme="cathedral"] .section-shell h2,
+html[data-theme="cathedral"] .ft-glitch-title {
   font-family: Georgia, "Palatino Linotype", Palatino, serif;
   letter-spacing: 0.01em;
   font-weight: 500;
+  color: #f2e9df !important;
 }
 
-html[data-theme="noir"] .glass-card {
+html[data-theme="cathedral"] .text-slate-300,
+html[data-theme="cathedral"] .text-slate-400,
+html[data-theme="cathedral"] .text-slate-500 {
+  color: #b8aab0 !important;
+}
+
+html[data-theme="cathedral"] .glass-card {
+  border-radius: 0.2rem;
+  border-color: rgba(194, 161, 93, 0.22);
+  background: rgba(23, 16, 21, 0.9);
+  box-shadow: 0 0 0 1px rgba(74, 13, 29, 0.35), inset 0 1px 0 rgba(234, 223, 209, 0.04);
+}
+
+html[data-theme="cathedral"] .glass-card:hover {
+  border-color: rgba(220, 35, 77, 0.35);
+  box-shadow: 0 0 28px rgba(220, 35, 77, 0.12);
+}
+
+html[data-theme="cathedral"] .ft-button-primary,
+html[data-theme="cathedral"] a.bg-accent {
+  background: #a81435 !important;
+  color: #eadfd1 !important;
   border-radius: 0.15rem;
-  border-color: rgba(74, 40, 52, 0.9);
-  background: rgba(18, 12, 16, 0.88);
-  box-shadow: 0 0 0 1px rgba(190, 140, 110, 0.05);
-}
-
-html[data-theme="noir"] .ft-button-primary,
-html[data-theme="noir"] a.bg-accent {
-  background: #8c303e !important;
-  color: #f3ebe3 !important;
-  border-radius: 0.1rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 0.72rem;
+  box-shadow: 0 0 22px rgba(220, 35, 77, 0.28);
 }
 
-html[data-theme="noir"] .ft-button-secondary {
-  border-radius: 0.1rem;
-  border-color: rgba(190, 140, 110, 0.55) !important;
-  color: #be8c6e !important;
+html[data-theme="cathedral"] .ft-button-primary:hover,
+html[data-theme="cathedral"] a.bg-accent:hover {
+  background: #dc234d !important;
 }
 
-html[data-theme="noir"] .text-accent,
-html[data-theme="noir"] .hero-eyebrow {
-  color: #be8c6e !important;
+html[data-theme="cathedral"] .ft-button-secondary {
+  border-radius: 0.15rem;
+  border-color: rgba(194, 161, 93, 0.55) !important;
+  color: #eadfd1 !important;
+  background: transparent !important;
 }
 
-html[data-theme="noir"] .hero-eyebrow {
-  border-radius: 0.1rem;
-  border-color: rgba(190, 140, 110, 0.3) !important;
-  background: rgba(140, 48, 62, 0.15) !important;
+html[data-theme="cathedral"] .text-accent,
+html[data-theme="cathedral"] .hero-eyebrow {
+  color: #c2a15d !important;
 }
 
-html[data-theme="noir"] footer {
-  border-top-color: rgba(74, 40, 52, 0.9);
-  background: #0c080a;
+html[data-theme="cathedral"] .hero-eyebrow {
+  border-radius: 0.15rem;
+  border-color: rgba(194, 161, 93, 0.35) !important;
+  background: rgba(74, 13, 29, 0.35) !important;
+}
+
+html[data-theme="cathedral"] footer {
+  border-top-color: rgba(194, 161, 93, 0.2);
+  background: #100a0e;
+}
+
+html[data-theme="cathedral"] .theme-dial-trigger {
+  color: #eadfd1;
+  border-color: rgba(194, 161, 93, 0.35);
 }
 
 /* Smooth theme transitions */

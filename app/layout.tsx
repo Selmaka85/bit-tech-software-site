@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const themeBootScript = `(function(){try{var k="bit-tech-site-theme";var legacy="bit-tech-future-tech-mode";var t=localStorage.getItem(k);var allowed=["core","future","executive","clinical","industrial","noir"];if(!t||allowed.indexOf(t)<0){t=localStorage.getItem(legacy)==="true"?"future":"core";}document.documentElement.dataset.theme=t;if(t==="future"){document.documentElement.dataset.futureTech="true";}}catch(e){}})();`;
+const themeBootScript = `(function(){try{var k="bit-tech-site-theme";var legacy="bit-tech-future-tech-mode";var t=localStorage.getItem(k);if(t==="noir"){t="cathedral";localStorage.setItem(k,"cathedral");}var allowed=["core","future","executive","clinical","industrial","cathedral"];if(!t||allowed.indexOf(t)<0){t=localStorage.getItem(legacy)==="true"?"future":"core";}document.documentElement.dataset.theme=t;if(t==="future"){document.documentElement.dataset.futureTech="true";}}catch(e){}})();`;
 
 export default function RootLayout({
   children,

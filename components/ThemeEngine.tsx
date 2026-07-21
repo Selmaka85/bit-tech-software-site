@@ -172,7 +172,7 @@ export function FutureTechHeroConsole() {
       <div className="ft-holo-core">
         <div className="ft-rings" />
         <div className="ft-sigil">
-          <span>BT</span>
+          <span>😈</span>
         </div>
       </div>
 
@@ -192,8 +192,8 @@ export function FutureTechHeroConsole() {
       </div>
 
       <div className="ft-terminal">
-        <span className="ft-prompt">info@bit-tech-software.co.uk</span>: future
-        identity active
+        <span className="ft-prompt">info@bit-tech-software.co.uk</span>: future-tech
+        interface active
         <br />
         <span className="ft-prompt">route</span>: consulting + football_ai +
         pipelines

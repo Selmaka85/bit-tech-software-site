@@ -79,17 +79,15 @@ function ThemeIcon({
           />
         </svg>
       );
-    case "rose":
+    case "arch":
       return (
         <svg {...common}>
           <path
+            strokeLinecap="round"
             strokeLinejoin="round"
-            d="M12 20c0-4 3-6 3-9a3 3 0 1 0-6 0c0 3 3 5 3 9Z"
+            d="M6 20V10a6 6 0 0 1 12 0v10M6 20h12M9 20v-4h6v4"
           />
-          <path
-            strokeLinejoin="round"
-            d="M12 8c2-2 4.5-2 5.5 0S16 12 12 12c-4 0-6.5-2-5.5-4S10 6 12 8Z"
-          />
+          <circle cx="12" cy="10" r="1.4" />
         </svg>
       );
     default:
