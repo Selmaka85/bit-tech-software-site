@@ -178,6 +178,19 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
     syncRotationToTheme(theme, false);
   }, [open, theme, syncRotationToTheme]);
 
+  const selectTheme = useCallback(
+    (id: ThemeId) => {
+      syncRotationToTheme(id, true);
+      setTheme(id);
+    },
+    [setTheme, syncRotationToTheme],
+  );
+
+  /** Defer unmount so the closing click cannot hit Exit/CTA under the modal. */
+  const closeDial = useCallback(() => {
+    window.setTimeout(() => setOpen(false), 80);
+  }, []);
+
   useEffect(() => {
     if (!open) {
       return;
@@ -186,7 +199,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
     document.body.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        closeDial();
       }
     };
     document.addEventListener("keydown", onKey);
@@ -194,15 +207,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
-
-  const selectTheme = useCallback(
-    (id: ThemeId) => {
-      syncRotationToTheme(id, true);
-      setTheme(id);
-    },
-    [setTheme, syncRotationToTheme],
-  );
+  }, [open, closeDial]);
 
   const angleFromPointer = (clientX: number, clientY: number) => {
     const node = dialRef.current;
@@ -275,7 +280,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
         type="button"
         className="theme-dial-backdrop"
         aria-label="Close Design Modes"
-        onClick={() => setOpen(false)}
+        onClick={closeDial}
       />
 
       <div
@@ -299,7 +304,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
           <button
             type="button"
             className="theme-dial-close"
-            onClick={() => setOpen(false)}
+            onClick={closeDial}
           >
             Close
           </button>
@@ -404,7 +409,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
             <button
               type="button"
               className="theme-dial-apply"
-              onClick={() => setOpen(false)}
+              onClick={closeDial}
             >
               Apply {current.label}
             </button>

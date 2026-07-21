@@ -1,15 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSiteTheme } from "@/components/ThemeEngine";
+
+/** Ignore ghost clicks that fall through when Design Modes closes. */
+const EXIT_ARM_MS = 900;
 
 export function NocturneChallengePanel() {
   const { theme, setTheme } = useSiteTheme();
   const [announce, setAnnounce] = useState("");
+  const [exitArmed, setExitArmed] = useState(false);
   const liveRef = useRef<HTMLParagraphElement>(null);
 
+  useEffect(() => {
+    if (theme !== "nocturne") {
+      setExitArmed(false);
+      return;
+    }
+    setExitArmed(false);
+    const timer = window.setTimeout(() => setExitArmed(true), EXIT_ARM_MS);
+    return () => window.clearTimeout(timer);
+  }, [theme]);
+
   const exitNocturne = useCallback(() => {
+    if (!exitArmed) {
+      return;
+    }
     setTheme("core");
     setAnnounce("Nocturne theme deactivated");
     window.setTimeout(() => {
@@ -17,7 +34,7 @@ export function NocturneChallengePanel() {
         liveRef.current.textContent = "Nocturne theme deactivated";
       }
     }, 0);
-  }, [setTheme]);
+  }, [exitArmed, setTheme]);
 
   if (theme !== "nocturne") {
     return null;
@@ -144,8 +161,8 @@ export function NocturneChallengePanel() {
                 text-zinc-300/90 sm:text-lg
               "
             >
-              Crimson Nocturne is active — same product, darker world. Exit
-              anytime.
+              Crimson Nocturne is active — same product, darker world. Leave when
+              you want, or switch theme from Design Modes.
             </p>
           </div>
 
@@ -153,6 +170,7 @@ export function NocturneChallengePanel() {
             <button
               type="button"
               onClick={exitNocturne}
+              disabled={!exitArmed}
               aria-pressed="true"
               className="
                 group inline-flex min-h-14 items-center gap-7
@@ -171,9 +189,12 @@ export function NocturneChallengePanel() {
                 focus-visible:ring-violet-300
                 focus-visible:ring-offset-4
                 focus-visible:ring-offset-[#070611]
+                disabled:pointer-events-none
+                disabled:opacity-70
+                disabled:hover:translate-y-0
               "
             >
-              Exit Nocturne
+              Back to Core
               <span
                 aria-hidden="true"
                 className="
@@ -193,7 +214,7 @@ export function NocturneChallengePanel() {
             >
               Same product. Same structure.
               <br />
-              Tap again to leave the dark.
+              Or pick another mode in Design Modes.
             </p>
           </div>
         </div>
