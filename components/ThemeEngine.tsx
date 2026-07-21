@@ -24,12 +24,15 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function applyTheme(theme: ThemeId) {
-  document.documentElement.dataset.theme = theme;
+  const root = document.documentElement;
+  root.dataset.theme = theme;
   if (theme === "future") {
-    document.documentElement.dataset.futureTech = "true";
+    root.dataset.futureTech = "true";
   } else {
-    delete document.documentElement.dataset.futureTech;
+    delete root.dataset.futureTech;
   }
+  // Force style recalc so CSS variable skins apply immediately
+  root.style.colorScheme = "";
 }
 
 export function useSiteTheme() {

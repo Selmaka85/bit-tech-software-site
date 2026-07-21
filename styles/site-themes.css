@@ -1,24 +1,30 @@
-/* Radial Theme Dial (Design Modes) + Executive / Clinical / Industrial / Noir.
-   Future skin: styles/future-tech.css (html[data-theme="future"]).
-   Core: :root defaults in globals.css (html[data-theme="core"]). */
+﻿/* Radial Theme Dial (Design Modes) + skins */
 
 .theme-dial-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  min-width: 2.25rem;
   border-radius: 999px;
   border: 1px solid rgb(var(--surface-border-rgb) / 0.9);
-  background: rgb(var(--surface-raised-rgb) / 0.85);
+  background: rgb(var(--surface-raised-rgb) / 0.9);
   color: rgb(148 163 184);
-  padding: 0.4rem 0.75rem;
-  font-size: 0.7rem;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition:
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.theme-dial-trigger.is-compact { padding: 0.45rem; }
+.theme-dial-trigger-label { display: none; }
+
+@media (min-width: 640px) {
+  .theme-dial-trigger.is-compact { padding: 0.4rem 0.7rem; }
+  .theme-dial-trigger.is-compact .theme-dial-trigger-label { display: inline; }
 }
 
 .theme-dial-trigger:hover {
@@ -30,69 +36,70 @@
 .theme-dial-overlay {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 200;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 0.75rem;
+  padding: 0;
 }
 
 @media (min-width: 768px) {
-  .theme-dial-overlay {
-    align-items: center;
-    padding: 1.25rem;
-  }
+  .theme-dial-overlay { align-items: center; padding: 1rem; }
 }
 
 .theme-dial-backdrop {
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgb(2 6 14 / 0.72);
-  backdrop-filter: blur(6px);
+  background: rgb(2 6 14 / 0.78);
+  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 
 .theme-dial-modal {
   position: relative;
   z-index: 1;
-  width: min(56rem, 100%);
-  max-height: min(92vh, 52rem);
+  width: 100%;
+  max-height: min(90dvh, 40rem);
   overflow: auto;
-  border-radius: 1.25rem 1.25rem 0.85rem 0.85rem;
+  overscroll-behavior: contain;
+  border-radius: 1.1rem 1.1rem 0 0;
   border: 1px solid rgb(99 102 241 / 0.28);
+  border-bottom: 0;
   background:
     radial-gradient(circle at 20% 0%, rgb(99 102 241 / 0.16), transparent 40%),
-    radial-gradient(circle at 80% 10%, rgb(34 197 94 / 0.08), transparent 35%),
     linear-gradient(160deg, #0b1220 0%, #111827 55%, #0a0f1a 100%);
   color: #e5e7eb;
-  box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
-  padding: 1.1rem 1.1rem 1.25rem;
+  box-shadow: 0 -12px 48px rgb(0 0 0 / 0.45);
+  padding: 0.55rem 1rem 1.25rem;
   animation: theme-dial-in 0.28s ease-out;
+  -webkit-overflow-scrolling: touch;
+}
+
+.theme-dial-grabber {
+  width: 2.5rem;
+  height: 0.28rem;
+  margin: 0.15rem auto 0.75rem;
+  border-radius: 999px;
+  background: rgb(148 163 184 / 0.45);
 }
 
 @keyframes theme-dial-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .theme-dial-modal-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .theme-dial-kicker {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -100,229 +107,34 @@
 }
 
 .theme-dial-title {
-  margin: 0.35rem 0 0;
-  font-size: clamp(1.25rem, 3vw, 1.85rem);
+  margin: 0.3rem 0 0;
+  font-size: clamp(1.05rem, 4.2vw, 1.65rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #fff;
+  line-height: 1.2;
 }
 
 .theme-dial-sub {
-  margin: 0.45rem 0 0;
+  margin: 0.35rem 0 0;
   max-width: 36rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.45;
   color: #94a3b8;
 }
 
 .theme-dial-close {
+  flex-shrink: 0;
   border-radius: 999px;
   border: 1px solid rgb(148 163 184 / 0.35);
   background: transparent;
   color: #cbd5e1;
-  padding: 0.4rem 0.85rem;
-  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
-.theme-dial-body {
-  display: none;
-  gap: 1.25rem;
-  align-items: center;
-}
-
-.theme-dial-stage {
-  position: relative;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 22rem;
-  padding-top: 0.5rem;
-}
-
-.theme-dial-marker {
-  position: relative;
-  z-index: 2;
-  color: #a78bfa;
-  font-size: 1rem;
-  filter: drop-shadow(0 0 8px rgb(167 139 250 / 0.8));
-  margin-bottom: -0.35rem;
-}
-
-.theme-dial-wheel {
-  position: relative;
-  width: 19rem;
-  height: 19rem;
-  border-radius: 50%;
-  touch-action: none;
-  cursor: grab;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  user-select: none;
-}
-
-.theme-dial-wheel:active {
-  cursor: grabbing;
-  transition: none;
-}
-
-.theme-dial-ring {
-  position: absolute;
-  inset: 0.9rem;
-  border-radius: 50%;
-  border: 1px solid rgb(148 163 184 / 0.22);
-  box-shadow:
-    inset 0 0 40px rgb(99 102 241 / 0.12),
-    0 0 40px rgb(99 102 241 / 0.08);
-  background:
-    conic-gradient(
-      from -30deg,
-      rgb(59 130 246 / 0.2),
-      rgb(168 85 247 / 0.18),
-      rgb(34 197 94 / 0.14),
-      rgb(234 179 8 / 0.14),
-      rgb(244 63 94 / 0.16),
-      rgb(14 165 233 / 0.16),
-      rgb(59 130 246 / 0.2)
-    );
-  opacity: 0.55;
-}
-
-.theme-dial-hub {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 4.5rem;
-  height: 4.5rem;
-  margin: -2.25rem 0 0 -2.25rem;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgb(99 102 241 / 0.45);
-  background: radial-gradient(circle at 35% 30%, #1e293b, #0b1220 70%);
-  box-shadow: 0 0 24px rgb(99 102 241 / 0.25);
-  color: #93c5fd;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.theme-dial-segment {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 5.6rem;
-  margin: -2.6rem 0 0 -2.8rem;
-  border: 0;
-  background: transparent;
-  color: #cbd5e1;
-  padding: 0;
-  cursor: pointer;
-}
-
-.theme-dial-segment-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  border-radius: 0.9rem;
-  border: 1px solid rgb(148 163 184 / 0.25);
-  background: rgb(15 23 42 / 0.88);
-  padding: 0.45rem 0.35rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    color 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.theme-dial-segment-inner strong {
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.theme-dial-segment-inner small {
-  font-size: 0.55rem;
-  color: #94a3b8;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.theme-dial-segment.is-active .theme-dial-segment-inner {
-  border-color: rgb(96 165 250 / 0.8);
-  color: #93c5fd;
-  box-shadow: 0 0 18px rgb(59 130 246 / 0.35);
-  background: rgb(30 41 59 / 0.95);
-}
-
-.theme-dial-hint {
-  margin: 0.85rem 0 0;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #64748b;
-}
-
-.theme-dial-detail {
-  width: min(16rem, 100%);
-  border-radius: 1rem;
-  border: 1px solid rgb(148 163 184 / 0.2);
-  background: rgb(15 23 42 / 0.75);
-  padding: 1rem 1.1rem;
-}
-
-.theme-dial-detail-label {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #60a5fa;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.theme-dial-detail-blurb {
-  margin: 0.55rem 0 0.85rem;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: #cbd5e1;
-}
-
-.theme-dial-detail ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.theme-dial-detail li {
-  position: relative;
-  padding-left: 1.15rem;
-  font-size: 0.8rem;
-  color: #94a3b8;
-}
-
-.theme-dial-detail li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #60a5fa;
-  font-size: 0.75rem;
-}
-
-.theme-dial-mobile {
-  display: block;
-  margin-top: 0.75rem;
-}
-
-.theme-dial-mobile-label {
-  margin: 0 0 0.55rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #94a3b8;
-}
+.theme-dial-mobile { display: block; }
 
 .theme-dial-mobile-grid {
   display: grid;
@@ -333,53 +145,255 @@
 .theme-dial-chip {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
+  min-height: 3.25rem;
   text-align: left;
   border-radius: 0.85rem;
   border: 1px solid rgb(148 163 184 / 0.28);
-  background: rgb(15 23 42 / 0.85);
+  background: rgb(15 23 42 / 0.92);
   color: #e2e8f0;
   padding: 0.65rem 0.7rem;
 }
 
-.theme-dial-chip strong {
-  display: block;
-  font-size: 0.78rem;
-}
-
+.theme-dial-chip strong { display: block; font-size: 0.8rem; }
 .theme-dial-chip small {
   display: block;
-  margin-top: 0.1rem;
+  margin-top: 0.12rem;
   font-size: 0.65rem;
   color: #94a3b8;
+  line-height: 1.25;
 }
 
 .theme-dial-chip.is-active {
-  border-color: rgb(96 165 250 / 0.75);
-  box-shadow: 0 0 0 1px rgb(59 130 246 / 0.25);
+  border-color: rgb(96 165 250 / 0.85);
+  box-shadow: 0 0 0 1px rgb(59 130 246 / 0.3);
+  background: rgb(30 41 59 / 0.95);
+}
+
+.theme-dial-mobile-current {
+  margin: 0.85rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #94a3b8;
+}
+
+.theme-dial-mobile-current strong { color: #93c5fd; }
+
+.theme-dial-body {
+  display: none;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.theme-dial-stage {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 22rem;
+  padding-top: 0.35rem;
+  --dial-radius: -6.35rem;
+}
+
+.theme-dial-marker {
+  position: relative;
+  z-index: 2;
+  color: #a78bfa;
+  font-size: 1rem;
+  filter: drop-shadow(0 0 8px rgb(167 139 250 / 0.8));
+  margin-bottom: -0.2rem;
+}
+
+.theme-dial-wheel {
+  position: relative;
+  width: min(18.5rem, 72vw);
+  height: min(18.5rem, 72vw);
+  border-radius: 50%;
+  touch-action: none;
+  cursor: grab;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+}
+
+.theme-dial-wheel.is-dragging { cursor: grabbing; transition: none; }
+
+.theme-dial-ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 1px solid rgb(148 163 184 / 0.22);
+  box-shadow: inset 0 0 40px rgb(99 102 241 / 0.12), 0 0 40px rgb(99 102 241 / 0.08);
+  background: conic-gradient(from -30deg, rgb(59 130 246 / 0.2), rgb(168 85 247 / 0.18), rgb(34 197 94 / 0.14), rgb(234 179 8 / 0.14), rgb(244 63 94 / 0.16), rgb(14 165 233 / 0.16), rgb(59 130 246 / 0.2));
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.theme-dial-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4.25rem;
+  height: 4.25rem;
+  margin: -2.125rem 0 0 -2.125rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(99 102 241 / 0.45);
+  background: radial-gradient(circle at 35% 30%, #1e293b, #0b1220 70%);
+  box-shadow: 0 0 24px rgb(99 102 241 / 0.25);
+  color: #93c5fd;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.theme-dial-segment {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5.4rem;
+  margin: -2.5rem 0 0 -2.7rem;
+  border: 0;
+  background: transparent;
+  color: #cbd5e1;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.theme-dial-segment-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(148 163 184 / 0.25);
+  background: rgb(15 23 42 / 0.92);
+  padding: 0.4rem 0.3rem;
+}
+
+.theme-dial-segment-inner strong {
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.theme-dial-segment-inner small {
+  font-size: 0.52rem;
+  color: #94a3b8;
+  line-height: 1.15;
+  text-align: center;
+  max-width: 4.8rem;
+}
+
+.theme-dial-segment.is-active .theme-dial-segment-inner {
+  border-color: rgb(96 165 250 / 0.8);
+  color: #93c5fd;
+  box-shadow: 0 0 18px rgb(59 130 246 / 0.35);
+  background: rgb(30 41 59 / 0.95);
+}
+
+.theme-dial-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.theme-dial-detail {
+  width: min(15.5rem, 100%);
+  border-radius: 1rem;
+  border: 1px solid rgb(148 163 184 / 0.2);
+  background: rgb(15 23 42 / 0.75);
+  padding: 1rem 1.05rem;
+}
+
+.theme-dial-detail-label {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.theme-dial-detail-blurb {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.theme-dial-detail ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.theme-dial-detail li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.theme-dial-detail li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+  font-size: 0.72rem;
+}
+
+.theme-dial-apply {
+  margin-top: 0.95rem;
+  width: 100%;
+  border-radius: 999px;
+  border: 0;
+  background: #3b82f6;
+  color: #fff;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 650;
 }
 
 @media (min-width: 768px) {
-  .theme-dial-body {
-    display: flex;
-  }
-
-  .theme-dial-mobile {
-    display: none;
-  }
-
+  .theme-dial-overlay { padding: 1.25rem; }
   .theme-dial-modal {
+    width: min(54rem, 100%);
+    max-height: min(88vh, 42rem);
     border-radius: 1.25rem;
-    padding: 1.35rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgb(99 102 241 / 0.28);
+    padding: 1.25rem 1.4rem 1.4rem;
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
   }
+  .theme-dial-grabber { display: none; }
+  .theme-dial-body { display: flex; }
+  .theme-dial-mobile { display: none; }
 }
 
-/* ——— Core (explicit) ——— */
+html[data-theme] body { background-color: rgb(var(--surface-rgb)); }
+
 html[data-theme="core"] {
   color-scheme: dark;
+  --surface-rgb: 11 17 32;
+  --surface-raised-rgb: 17 24 39;
+  --surface-border-rgb: 30 41 59;
+  --accent-rgb: 34 197 94;
+  --accent-muted-rgb: 22 163 74;
+  --color-accent-glow: rgba(34, 197, 94, 0.15);
+  --color-accent-glow-strong: rgba(34, 197, 94, 0.35);
+  --color-orb-secondary: rgba(59, 130, 246, 0.1);
+  --grid-line: rgba(148, 163, 184, 0.06);
 }
 
-/* ——— Executive ——— */
+/* â€”â€”â€” Executive â€”â€”â€” */
 html[data-theme="executive"] {
   color-scheme: light;
   --surface-rgb: 247 244 238;
@@ -461,7 +475,7 @@ html[data-theme="executive"] .theme-dial-trigger {
   color: #3d4a5c;
 }
 
-/* ——— Clinical ——— */
+/* â€”â€”â€” Clinical â€”â€”â€” */
 html[data-theme="clinical"] {
   color-scheme: light;
   --surface-rgb: 246 249 251;
@@ -535,7 +549,7 @@ html[data-theme="clinical"] .theme-dial-trigger {
   color: #475569;
 }
 
-/* ——— Industrial ——— */
+/* â€”â€”â€” Industrial â€”â€”â€” */
 html[data-theme="industrial"] {
   color-scheme: dark;
   --surface-rgb: 18 18 18;
@@ -606,7 +620,7 @@ html[data-theme="industrial"] footer {
   border-top-color: rgba(234, 179, 8, 0.2);
 }
 
-/* ——— Noir ——— */
+/* â€”â€”â€” Noir â€”â€”â€” */
 html[data-theme="noir"] {
   color-scheme: dark;
   --surface-rgb: 8 6 8;

@@ -8,6 +8,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { createPortal } from "react-dom";
 import {
   SITE_THEMES,
   THEME_SEGMENT_DEG,
@@ -108,6 +109,11 @@ function shortestRotation(from: number, to: number) {
   return from + delta;
 }
 
+function snapIndexFromRotation(rotationDeg: number) {
+  const raw = Math.round(-rotationDeg / THEME_SEGMENT_DEG);
+  return ((raw % SITE_THEMES.length) + SITE_THEMES.length) % SITE_THEMES.length;
+}
+
 function PaletteGlyph({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -124,31 +130,54 @@ function PaletteGlyph({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-export function ThemeDial() {
+type ThemeDialProps = {
+  /** Compact icon-only trigger for tight headers */
+  compact?: boolean;
+};
+
+export function ThemeDial({ compact = false }: ThemeDialProps) {
   const { theme, setTheme } = useSiteTheme();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const rotationRef = useRef(0);
   const dragRef = useRef<{
     active: boolean;
+    moved: boolean;
     startAngle: number;
     startRotation: number;
-  }>({ active: false, startAngle: 0, startRotation: 0 });
+    pointerId: number | null;
+  }>({
+    active: false,
+    moved: false,
+    startAngle: 0,
+    startRotation: 0,
+    pointerId: null,
+  });
   const dialRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const current = SITE_THEMES[themeIndex(theme)] ?? SITE_THEMES[0];
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const syncRotationToTheme = useCallback((id: ThemeId, animate = true) => {
     const index = Math.max(0, themeIndex(id));
     const target = -index * THEME_SEGMENT_DEG;
-    setRotation((prev) =>
-      animate ? shortestRotation(prev, target) : target,
-    );
+    setRotation((prev) => {
+      const next = animate ? shortestRotation(prev, target) : target;
+      rotationRef.current = next;
+      return next;
+    });
   }, []);
 
   useEffect(() => {
-    if (open) {
-      syncRotationToTheme(theme, false);
+    if (!open) {
+      return;
     }
+    syncRotationToTheme(theme, false);
   }, [open, theme, syncRotationToTheme]);
 
   useEffect(() => {
@@ -169,10 +198,13 @@ export function ThemeDial() {
     };
   }, [open]);
 
-  const selectTheme = (id: ThemeId) => {
-    syncRotationToTheme(id, true);
-    setTheme(id);
-  };
+  const selectTheme = useCallback(
+    (id: ThemeId) => {
+      syncRotationToTheme(id, true);
+      setTheme(id);
+    },
+    [setTheme, syncRotationToTheme],
+  );
 
   const angleFromPointer = (clientX: number, clientY: number) => {
     const node = dialRef.current;
@@ -189,12 +221,16 @@ export function ThemeDial() {
     if (event.button !== 0) {
       return;
     }
+    event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
     dragRef.current = {
       active: true,
+      moved: false,
       startAngle: angleFromPointer(event.clientX, event.clientY),
-      startRotation: rotation,
+      startRotation: rotationRef.current,
+      pointerId: event.pointerId,
     };
+    setDragging(true);
   };
 
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -203,174 +239,197 @@ export function ThemeDial() {
     }
     const currentAngle = angleFromPointer(event.clientX, event.clientY);
     const delta = currentAngle - dragRef.current.startAngle;
-    setRotation(dragRef.current.startRotation + delta);
+    if (Math.abs(delta) > 3) {
+      dragRef.current.moved = true;
+    }
+    const next = dragRef.current.startRotation + delta;
+    rotationRef.current = next;
+    setRotation(next);
   };
 
-  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+  const endDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!dragRef.current.active) {
       return;
     }
+    const moved = dragRef.current.moved;
     dragRef.current.active = false;
+    setDragging(false);
     try {
       event.currentTarget.releasePointerCapture(event.pointerId);
     } catch {
       /* ignore */
     }
 
-    const snappedIndex =
-      ((Math.round(-rotation / THEME_SEGMENT_DEG) % SITE_THEMES.length) +
-        SITE_THEMES.length) %
-      SITE_THEMES.length;
-    const next = SITE_THEMES[snappedIndex];
+    if (!moved) {
+      return;
+    }
+
+    const index = snapIndexFromRotation(rotationRef.current);
+    const next = SITE_THEMES[index];
     if (next) {
       selectTheme(next.id);
     }
   };
 
+  const modal = open ? (
+    <div className="theme-dial-overlay" role="presentation">
+      <button
+        type="button"
+        className="theme-dial-backdrop"
+        aria-label="Close Design Modes"
+        onClick={() => setOpen(false)}
+      />
+
+      <div
+        className="theme-dial-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
+        <div className="theme-dial-grabber" aria-hidden />
+
+        <div className="theme-dial-modal-head">
+          <div>
+            <p className="theme-dial-kicker">Design Modes</p>
+            <h2 id={titleId} className="theme-dial-title">
+              One product. Six visual worlds.
+            </h2>
+            <p className="theme-dial-sub">
+              Same content — six visual identities.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="theme-dial-close"
+            onClick={() => setOpen(false)}
+          >
+            Close
+          </button>
+        </div>
+
+        {/* Mobile-first: large chips */}
+        <div className="theme-dial-mobile">
+          <div className="theme-dial-mobile-grid">
+            {SITE_THEMES.map((item) => (
+              <button
+                key={`sheet-${item.id}`}
+                type="button"
+                className={`theme-dial-chip ${item.id === theme ? "is-active" : ""}`}
+                onClick={() => selectTheme(item.id)}
+              >
+                <ThemeIcon icon={item.icon} className="h-4 w-4 shrink-0" />
+                <span>
+                  <strong>{item.label}</strong>
+                  <small>{item.tagline}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="theme-dial-mobile-current">
+            Active: <strong>{current.label}</strong> — {current.blurb}
+          </p>
+        </div>
+
+        {/* Desktop dial */}
+        <div className="theme-dial-body">
+          <div className="theme-dial-stage">
+            <div className="theme-dial-marker" aria-hidden>
+              ▼
+            </div>
+
+            <div
+              ref={dialRef}
+              className={`theme-dial-wheel${dragging ? " is-dragging" : ""}`}
+              style={{ transform: `rotate(${rotation}deg)` }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+            >
+              <div className="theme-dial-ring" aria-hidden />
+              {SITE_THEMES.map((item, index) => {
+                const angle = index * THEME_SEGMENT_DEG;
+                const active = item.id === theme;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`theme-dial-segment ${active ? "is-active" : ""}`}
+                    style={{
+                      transform: `rotate(${angle}deg) translateY(var(--dial-radius)) rotate(${-angle}deg)`,
+                    }}
+                    aria-label={`${item.label}: ${item.tagline}`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (dragRef.current.moved) {
+                        return;
+                      }
+                      selectTheme(item.id);
+                    }}
+                    onPointerDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <span
+                      className="theme-dial-segment-inner"
+                      style={{ transform: `rotate(${-rotation}deg)` }}
+                    >
+                      <ThemeIcon icon={item.icon} className="h-4 w-4" />
+                      <strong>{item.label}</strong>
+                      <small>{item.tagline}</small>
+                    </span>
+                  </button>
+                );
+              })}
+              <div className="theme-dial-hub" aria-hidden>
+                <span>BT</span>
+              </div>
+            </div>
+
+            <p className="theme-dial-hint">Drag to rotate · Click a segment</p>
+          </div>
+
+          <aside className="theme-dial-detail">
+            <p className="theme-dial-detail-label">{current.label}</p>
+            <p className="theme-dial-detail-blurb">{current.blurb}</p>
+            <ul>
+              <li>{current.tagline}</li>
+              <li>Same structure and CTAs</li>
+              <li>Tokens, type and atmosphere only</li>
+              <li>Saved for your next visit</li>
+            </ul>
+            <button
+              type="button"
+              className="theme-dial-apply"
+              onClick={() => setOpen(false)}
+            >
+              Continue with {current.label}
+            </button>
+          </aside>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       <button
         type="button"
-        className="theme-dial-trigger"
+        className={`theme-dial-trigger${compact ? " is-compact" : ""}`}
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => setOpen(true)}
         title="Design Modes — six visual identities"
       >
         <PaletteGlyph />
-        <span className="hidden sm:inline">Design Modes</span>
+        <span className="theme-dial-trigger-label">Design Modes</span>
       </button>
 
-      {open ? (
-        <div className="theme-dial-overlay" role="presentation">
-          <button
-            type="button"
-            className="theme-dial-backdrop"
-            aria-label="Close Design Modes"
-            onClick={() => setOpen(false)}
-          />
-
-          <div
-            className="theme-dial-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-          >
-            <div className="theme-dial-modal-head">
-              <div>
-                <p className="theme-dial-kicker">Design Modes</p>
-                <h2 id={titleId} className="theme-dial-title">
-                  One product. Six visual worlds.
-                </h2>
-                <p className="theme-dial-sub">
-                  Explore the same product across six visual identities. Same
-                  content — different skins.
-                </p>
-              </div>
-              <button
-                type="button"
-                className="theme-dial-close"
-                onClick={() => setOpen(false)}
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="theme-dial-body">
-              <div className="theme-dial-stage">
-                <div className="theme-dial-marker" aria-hidden>
-                  ▼
-                </div>
-
-                <div
-                  ref={dialRef}
-                  className="theme-dial-wheel"
-                  style={{ transform: `rotate(${rotation}deg)` }}
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerUp}
-                  onPointerCancel={onPointerUp}
-                >
-                  <div className="theme-dial-ring" aria-hidden />
-                  {SITE_THEMES.map((item, index) => {
-                    const angle = index * THEME_SEGMENT_DEG;
-                    const active = item.id === theme;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        className={`theme-dial-segment ${active ? "is-active" : ""}`}
-                        style={{
-                          transform: `rotate(${angle}deg) translateY(-6.6rem) rotate(${-angle}deg)`,
-                        }}
-                        aria-label={`${item.label}: ${item.tagline}`}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          selectTheme(item.id);
-                        }}
-                      >
-                        <span
-                          className="theme-dial-segment-inner"
-                          style={{
-                            transform: `rotate(${-rotation}deg)`,
-                          }}
-                        >
-                          <ThemeIcon icon={item.icon} />
-                          <strong>{item.label}</strong>
-                          <small>{item.tagline}</small>
-                        </span>
-                      </button>
-                    );
-                  })}
-                  <div className="theme-dial-hub" aria-hidden>
-                    <span>BT</span>
-                  </div>
-                </div>
-
-                <p className="theme-dial-hint">
-                  Drag to rotate · Click to select
-                </p>
-              </div>
-
-              <aside className="theme-dial-detail" data-theme-preview={theme}>
-                <p className="theme-dial-detail-label">{current.label}</p>
-                <p className="theme-dial-detail-blurb">{current.blurb}</p>
-                <ul>
-                  <li>{current.tagline}</li>
-                  <li>Same structure & CTAs</li>
-                  <li>Tokens, type & atmosphere only</li>
-                  <li>Saved for your next visit</li>
-                </ul>
-              </aside>
-            </div>
-
-            <div className="theme-dial-mobile">
-              <p className="theme-dial-mobile-label">Pick a visual identity</p>
-              <div className="theme-dial-mobile-grid">
-                {SITE_THEMES.map((item) => (
-                  <button
-                    key={`sheet-${item.id}`}
-                    type="button"
-                    className={`theme-dial-chip ${item.id === theme ? "is-active" : ""}`}
-                    onClick={() => selectTheme(item.id)}
-                  >
-                    <ThemeIcon icon={item.icon} className="h-4 w-4" />
-                    <span>
-                      <strong>{item.label}</strong>
-                      <small>{item.tagline}</small>
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {mounted && modal ? createPortal(modal, document.body) : null}
     </>
   );
 }
 
-/** Header alias */
 export function ThemeRosette() {
   return <ThemeDial />;
 }

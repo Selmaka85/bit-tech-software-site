@@ -20,7 +20,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -33,7 +33,7 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <ThemeDial />
+          <ThemeDial compact />
 
           <a
             href="/#contact"
@@ -44,7 +44,7 @@ export function Header() {
 
           <button
             type="button"
-            className="inline-flex rounded-lg border border-surface-border p-2 text-slate-300 md:hidden"
+            className="inline-flex rounded-lg border border-surface-border p-2 text-slate-300 lg:hidden"
             aria-expanded={open}
             aria-label="Toggle menu"
             onClick={() => setOpen((value) => !value)}
@@ -62,7 +62,7 @@ export function Header() {
 
       {open ? (
         <nav
-          className="border-t border-surface-border bg-surface-raised/95 px-5 py-4 md:hidden"
+          className="border-t border-surface-border bg-surface-raised/95 px-5 py-4 lg:hidden"
           aria-label="Mobile"
         >
           <div className="flex flex-col gap-3">
@@ -76,16 +76,13 @@ export function Header() {
                 {link.label}
               </a>
             ))}
-            <div className="mt-2 flex flex-col gap-3">
-              <ThemeDial />
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-surface"
-                onClick={() => setOpen(false)}
-              >
-                Get in touch
-              </a>
-            </div>
+            <a
+              href="/#contact"
+              className="mt-2 inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-surface sm:hidden"
+              onClick={() => setOpen(false)}
+            >
+              Get in touch
+            </a>
           </div>
         </nav>
       ) : null}
