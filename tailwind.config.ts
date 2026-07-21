@@ -27,6 +27,12 @@ const config: Config = {
           "BlinkMacSystemFont",
           "sans-serif",
         ],
+        nocturne: [
+          "var(--font-nocturne-display)",
+          "Georgia",
+          "Palatino Linotype",
+          "serif",
+        ],
       },
     },
   },

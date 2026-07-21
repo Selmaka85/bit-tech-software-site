@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond } from "next/font/google";
 import { ThemeShell } from "@/components/ThemeEngine";
 import { JsonLd } from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site-data";
@@ -6,6 +7,13 @@ import { homeSeo } from "@/lib/seo-pages";
 import "./globals.css";
 import "../styles/future-tech.css";
 import "../styles/site-themes.css";
+
+const nocturneDisplay = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-nocturne-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -38,7 +46,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" data-theme="core" suppressHydrationWarning>
+    <html
+      lang="en-GB"
+      data-theme="core"
+      className={nocturneDisplay.variable}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>

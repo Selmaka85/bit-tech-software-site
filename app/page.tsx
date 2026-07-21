@@ -6,6 +6,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { NocturneChallengePanel } from "@/components/NocturneChallengePanel";
 import { PricingSection } from "@/components/PricingSection";
 import { ScopeSection } from "@/components/ScopeSection";
 import { ServicesSection } from "@/components/ServicesSection";
@@ -34,6 +35,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <NocturneChallengePanel />
         <AboutSection />
         <WorkSection />
         <ServicesSection />
