@@ -123,29 +123,181 @@ function MatrixRainCanvas() {
   );
 }
 
+function BloodDripCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      return;
+    }
+
+    let width = 0;
+    let height = 0;
+    let frameId = 0;
+    type Drop = {
+      x: number;
+      y: number;
+      speed: number;
+      len: number;
+      w: number;
+      sway: number;
+      phase: number;
+    };
+    let drops: Drop[] = [];
+
+    const spawn = (x: number, y?: number): Drop => ({
+      x,
+      y: y ?? -Math.random() * height,
+      speed: 1.6 + Math.random() * 3.4,
+      len: 14 + Math.random() * 38,
+      w: 1.4 + Math.random() * 2.4,
+      sway: (Math.random() - 0.5) * 0.35,
+      phase: Math.random() * Math.PI * 2,
+    });
+
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      // Matrix-style columns of blood streams (overlay-dense, still readable)
+      const columns = Math.max(22, Math.floor(width / 42));
+      drops = [];
+      for (let i = 0; i < columns; i++) {
+        const baseX = (i + 0.5) * (width / columns) + (Math.random() - 0.5) * 18;
+        drops.push(spawn(baseX, Math.random() * height));
+        if (Math.random() > 0.55) {
+          drops.push(spawn(baseX + (Math.random() - 0.5) * 10, Math.random() * height));
+        }
+      }
+    };
+
+    const draw = () => {
+      // Soft trail wash — like bloody-drops stream overlays
+      ctx.fillStyle = "rgba(7, 6, 9, 0.07)";
+      ctx.fillRect(0, 0, width, height);
+
+      for (const drop of drops) {
+        drop.phase += 0.04;
+        const x = drop.x + Math.sin(drop.phase) * drop.sway * 6;
+        const gradient = ctx.createLinearGradient(
+          x,
+          drop.y,
+          x,
+          drop.y + drop.len,
+        );
+        gradient.addColorStop(0, "rgba(208, 29, 63, 0)");
+        gradient.addColorStop(0.25, "rgba(208, 29, 63, 0.45)");
+        gradient.addColorStop(0.7, "rgba(163, 15, 45, 0.9)");
+        gradient.addColorStop(1, "rgba(90, 6, 22, 0.95)");
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = drop.w;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(x, drop.y);
+        ctx.lineTo(x, drop.y + drop.len);
+        ctx.stroke();
+
+        // Tip bead / splash head
+        ctx.fillStyle = "rgba(232, 48, 78, 0.9)";
+        ctx.beginPath();
+        ctx.ellipse(
+          x,
+          drop.y + drop.len,
+          drop.w * 1.25,
+          drop.w * 1.85,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        drop.y += drop.speed;
+        if (drop.y > height + 50) {
+          Object.assign(drop, spawn(drop.x + (Math.random() - 0.5) * 24, -40));
+        }
+      }
+
+      frameId = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      className="nocturne-blood-canvas pointer-events-none fixed inset-0 z-[1] opacity-[0.42]"
+      aria-hidden="true"
+      ref={canvasRef}
+    />
+  );
+}
+
+function NocturneAmbient() {
+  return (
+    <>
+      <BloodDripCanvas />
+      <div className="nocturne-fog" aria-hidden="true" />
+      <div className="nocturne-skull nocturne-skull-a" aria-hidden="true">
+        💀
+      </div>
+      <div className="nocturne-skull nocturne-skull-b" aria-hidden="true">
+        💀
+      </div>
+      <div className="nocturne-bat nocturne-bat-a" aria-hidden="true">
+        🦇
+      </div>
+      <div className="nocturne-bat nocturne-bat-b" aria-hidden="true">
+        🦇
+      </div>
+      <div className="nocturne-bat nocturne-bat-c" aria-hidden="true">
+        🦇
+      </div>
+    </>
+  );
+}
+
 function ThemeAmbient() {
   const { theme } = useSiteTheme();
 
-  if (theme !== "future") {
-    return null;
+  if (theme === "future") {
+    return (
+      <>
+        <MatrixRainCanvas />
+        <div className="ft-orb ft-orb-cyan" aria-hidden="true" />
+        <div className="ft-orb ft-orb-violet" aria-hidden="true" />
+        <div className="ft-orb ft-orb-magenta" aria-hidden="true" />
+        <div
+          className="ft-body-grid pointer-events-none fixed inset-0 z-[0]"
+          aria-hidden="true"
+        />
+        <div
+          className="ft-body-scanlines pointer-events-none fixed inset-0 z-[5]"
+          aria-hidden="true"
+        />
+      </>
+    );
   }
 
-  return (
-    <>
-      <MatrixRainCanvas />
-      <div className="ft-orb ft-orb-cyan" aria-hidden="true" />
-      <div className="ft-orb ft-orb-violet" aria-hidden="true" />
-      <div className="ft-orb ft-orb-magenta" aria-hidden="true" />
-      <div
-        className="ft-body-grid pointer-events-none fixed inset-0 z-[0]"
-        aria-hidden="true"
-      />
-      <div
-        className="ft-body-scanlines pointer-events-none fixed inset-0 z-[5]"
-        aria-hidden="true"
-      />
-    </>
-  );
+  if (theme === "nocturne") {
+    return <NocturneAmbient />;
+  }
+
+  return null;
 }
 
 export function FutureTechHeroConsole() {

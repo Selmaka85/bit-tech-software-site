@@ -4,7 +4,7 @@ export const THEME_IDS = [
   "executive",
   "clinical",
   "industrial",
-  "cathedral",
+  "nocturne",
 ] as const;
 
 export type ThemeId = (typeof THEME_IDS)[number];
@@ -60,12 +60,12 @@ export const SITE_THEMES: readonly SiteTheme[] = [
     icon: "gear",
   },
   {
-    id: "cathedral",
-    label: "Cathedral",
-    shortLabel: "Cathedral",
-    tagline: "Gothic luxury",
+    id: "nocturne",
+    label: "Nocturne",
+    shortLabel: "Nocturne",
+    tagline: "Aristocratic gothic",
     blurb:
-      "Crimson Cathedral — cinematic architecture, restrained crimson and antique gold. Premium, not Halloween.",
+      "Crimson Nocturne — dark baroque elegance, candlelight and cinematic atmosphere.",
     icon: "arch",
   },
 ] as const;
@@ -88,10 +88,9 @@ export function resolveStoredTheme(): ThemeId {
   }
   try {
     let stored = localStorage.getItem(THEME_STORAGE_KEY);
-    // Migrate former Noir → Cathedral
-    if (stored === "noir") {
-      stored = "cathedral";
-      localStorage.setItem(THEME_STORAGE_KEY, "cathedral");
+    if (stored === "noir" || stored === "cathedral") {
+      stored = "nocturne";
+      localStorage.setItem(THEME_STORAGE_KEY, "nocturne");
     }
     if (isThemeId(stored)) {
       return stored;

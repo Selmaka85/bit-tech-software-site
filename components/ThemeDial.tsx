@@ -289,11 +289,11 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
         <div className="theme-dial-modal-head">
           <div>
             <p className="theme-dial-kicker">Design Modes</p>
-            <h2 id={titleId} className="theme-dial-title">
+                <h2 id={titleId} className="theme-dial-title">
               One product. Six visual worlds.
             </h2>
             <p className="theme-dial-sub">
-              Same content — six visual identities.
+              Same content — six visual identities. Choose a skin.
             </p>
           </div>
           <button
@@ -370,11 +370,12 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
                   >
                     <span
                       className="theme-dial-segment-inner"
-                      style={{ transform: `rotate(${-rotation}deg)` }}
+                      style={{
+                        transform: `rotate(${-rotation}deg) scale(${active ? 1.07 : 1})`,
+                      }}
                     >
-                      <ThemeIcon icon={item.icon} className="h-4 w-4" />
+                      <ThemeIcon icon={item.icon} className="h-5 w-5" />
                       <strong>{item.label}</strong>
-                      <small>{item.tagline}</small>
                     </span>
                   </button>
                 );
@@ -387,13 +388,17 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
             <p className="theme-dial-hint">Drag to rotate · Click a segment</p>
           </div>
 
-          <aside className="theme-dial-detail">
+          <aside
+            key={current.id}
+            className="theme-dial-detail"
+            aria-live="polite"
+          >
             <p className="theme-dial-detail-label">{current.label}</p>
+            <p className="theme-dial-detail-tagline">{current.tagline}</p>
             <p className="theme-dial-detail-blurb">{current.blurb}</p>
             <ul>
-              <li>{current.tagline}</li>
               <li>Same structure and CTAs</li>
-              <li>Tokens, type and atmosphere only</li>
+              <li>Visual identity only</li>
               <li>Saved for your next visit</li>
             </ul>
             <button
@@ -401,7 +406,7 @@ export function ThemeDial({ compact = false }: ThemeDialProps) {
               className="theme-dial-apply"
               onClick={() => setOpen(false)}
             >
-              Continue with {current.label}
+              Apply {current.label}
             </button>
           </aside>
         </div>
