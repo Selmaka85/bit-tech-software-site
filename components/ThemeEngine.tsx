@@ -9,8 +9,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import {
   LEGACY_FUTURE_KEY,
+  NOCTURNE_FX_KEY,
   THEME_STORAGE_KEY,
   resolveStoredTheme,
   type ThemeId,
@@ -19,6 +21,10 @@ import {
 type ThemeContextValue = {
   theme: ThemeId;
   setTheme: (id: ThemeId) => void;
+  /** Special Nocturne atmosphere: blood, bats, spider */
+  nocturneFx: boolean;
+  setNocturneFx: (on: boolean) => void;
+  toggleNocturneFx: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -31,8 +37,31 @@ function applyTheme(theme: ThemeId) {
   } else {
     delete root.dataset.futureTech;
   }
-  // Force style recalc so CSS variable skins apply immediately
   root.style.colorScheme = "";
+}
+
+function applyNocturneFx(on: boolean) {
+  const root = document.documentElement;
+  if (on) {
+    root.dataset.nocturneFx = "on";
+  } else {
+    delete root.dataset.nocturneFx;
+  }
+}
+
+function readStoredNocturneFx(theme: ThemeId): boolean {
+  if (theme !== "nocturne") {
+    return false;
+  }
+  try {
+    const raw = localStorage.getItem(NOCTURNE_FX_KEY);
+    if (raw === null) {
+      return true;
+    }
+    return raw === "true";
+  } catch {
+    return true;
+  }
 }
 
 export function useSiteTheme() {
@@ -131,11 +160,8 @@ function BloodDripCanvas() {
     if (!canvas) {
       return;
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) {
       return;
     }
@@ -158,10 +184,10 @@ function BloodDripCanvas() {
     const spawn = (x: number, y?: number): Drop => ({
       x,
       y: y ?? -Math.random() * height,
-      speed: 2 + Math.random() * 4.2,
-      len: 22 + Math.random() * 52,
-      w: 2 + Math.random() * 3.2,
-      sway: (Math.random() - 0.5) * 0.4,
+      speed: 2.2 + Math.random() * 4.5,
+      len: 28 + Math.random() * 60,
+      w: 2.4 + Math.random() * 3.6,
+      sway: (Math.random() - 0.5) * 0.45,
       phase: Math.random() * Math.PI * 2,
     });
 
@@ -175,27 +201,25 @@ function BloodDripCanvas() {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const columns = Math.max(28, Math.floor(width / 36));
+      const columns = Math.max(32, Math.floor(width / 32));
       drops = [];
       for (let i = 0; i < columns; i++) {
         const baseX =
           (i + 0.5) * (width / columns) + (Math.random() - 0.5) * 20;
         drops.push(spawn(baseX, Math.random() * height));
-        if (Math.random() > 0.4) {
+        if (Math.random() > 0.35) {
           drops.push(
-            spawn(baseX + (Math.random() - 0.5) * 12, Math.random() * height),
+            spawn(baseX + (Math.random() - 0.5) * 14, Math.random() * height),
           );
         }
       }
     };
 
     const draw = () => {
-      // Trail wash without burying red under opaque dark
-      ctx.fillStyle = "rgba(7, 6, 9, 0.045)";
-      ctx.fillRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
       for (const drop of drops) {
-        drop.phase += 0.045;
+        drop.phase += 0.05;
         const x = drop.x + Math.sin(drop.phase) * drop.sway * 8;
         const gradient = ctx.createLinearGradient(
           x,
@@ -204,8 +228,8 @@ function BloodDripCanvas() {
           drop.y + drop.len,
         );
         gradient.addColorStop(0, "rgba(208, 29, 63, 0)");
-        gradient.addColorStop(0.2, "rgba(232, 48, 78, 0.55)");
-        gradient.addColorStop(0.65, "rgba(163, 15, 45, 0.95)");
+        gradient.addColorStop(0.15, "rgba(232, 48, 78, 0.65)");
+        gradient.addColorStop(0.55, "rgba(190, 20, 50, 0.95)");
         gradient.addColorStop(1, "rgba(90, 6, 22, 1)");
         ctx.strokeStyle = gradient;
         ctx.lineWidth = drop.w;
@@ -215,13 +239,13 @@ function BloodDripCanvas() {
         ctx.lineTo(x, drop.y + drop.len);
         ctx.stroke();
 
-        ctx.fillStyle = "rgba(255, 70, 96, 0.95)";
+        ctx.fillStyle = "rgba(255, 72, 98, 1)";
         ctx.beginPath();
         ctx.ellipse(
           x,
           drop.y + drop.len,
-          drop.w * 1.35,
-          drop.w * 2,
+          drop.w * 1.4,
+          drop.w * 2.1,
           0,
           0,
           Math.PI * 2,
@@ -229,8 +253,8 @@ function BloodDripCanvas() {
         ctx.fill();
 
         drop.y += drop.speed;
-        if (drop.y > height + 50) {
-          Object.assign(drop, spawn(drop.x + (Math.random() - 0.5) * 28, -50));
+        if (drop.y > height + 60) {
+          Object.assign(drop, spawn(drop.x + (Math.random() - 0.5) * 30, -60));
         }
       }
 
@@ -249,49 +273,42 @@ function BloodDripCanvas() {
 
   return (
     <canvas
-      className="nocturne-blood-canvas pointer-events-none fixed inset-0 z-[35] opacity-[0.55]"
+      className="nocturne-blood-canvas"
       aria-hidden="true"
       ref={canvasRef}
     />
   );
 }
 
-function NocturneAmbient() {
+function NocturneAmbientLayer() {
   return (
-    <>
+    <div className="nocturne-fx-root" aria-hidden="true">
       <BloodDripCanvas />
-      <div className="nocturne-fog" aria-hidden="true" />
-      <div className="nocturne-skull nocturne-skull-a" aria-hidden="true">
-        💀
-      </div>
-      <div className="nocturne-skull nocturne-skull-b" aria-hidden="true">
-        💀
-      </div>
-      <div className="nocturne-bat nocturne-bat-a" aria-hidden="true">
-        🦇
-      </div>
-      <div className="nocturne-bat nocturne-bat-b" aria-hidden="true">
-        🦇
-      </div>
-      <div className="nocturne-bat nocturne-bat-c" aria-hidden="true">
-        🦇
-      </div>
-      <div className="nocturne-bat nocturne-bat-d" aria-hidden="true">
-        🦇
-      </div>
-      <div className="nocturne-bat nocturne-bat-e" aria-hidden="true">
-        🦇
-      </div>
-      <div className="nocturne-spider" aria-hidden="true">
+      {/* CSS fallback streaks — visible even if canvas is blocked */}
+      <div className="nocturne-blood-css" />
+      <div className="nocturne-fog" />
+      <div className="nocturne-skull nocturne-skull-a">💀</div>
+      <div className="nocturne-skull nocturne-skull-b">💀</div>
+      <div className="nocturne-bat nocturne-bat-a">🦇</div>
+      <div className="nocturne-bat nocturne-bat-b">🦇</div>
+      <div className="nocturne-bat nocturne-bat-c">🦇</div>
+      <div className="nocturne-bat nocturne-bat-d">🦇</div>
+      <div className="nocturne-bat nocturne-bat-e">🦇</div>
+      <div className="nocturne-spider">
         <span className="nocturne-web-thread" />
         <span className="nocturne-spider-body">🕷️</span>
       </div>
-    </>
+    </div>
   );
 }
 
 function ThemeAmbient() {
-  const { theme } = useSiteTheme();
+  const { theme, nocturneFx } = useSiteTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (theme === "future") {
     return (
@@ -312,8 +329,8 @@ function ThemeAmbient() {
     );
   }
 
-  if (theme === "nocturne") {
-    return <NocturneAmbient />;
+  if (theme === "nocturne" && nocturneFx && mounted) {
+    return createPortal(<NocturneAmbientLayer />, document.body);
   }
 
   return null;
@@ -378,28 +395,69 @@ export function FutureTechHeroConsole() {
 
 export function ThemeShell({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>("core");
+  const [nocturneFx, setNocturneFxState] = useState(false);
 
   useEffect(() => {
     const initial = resolveStoredTheme();
     setThemeState(initial);
     applyTheme(initial);
+    const fx = readStoredNocturneFx(initial);
+    setNocturneFxState(fx);
+    applyNocturneFx(fx);
   }, []);
 
-  const setTheme = useCallback((id: ThemeId) => {
-    setThemeState(id);
-    applyTheme(id);
+  const setNocturneFx = useCallback((on: boolean) => {
+    setNocturneFxState(on);
+    applyNocturneFx(on);
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, id);
-      localStorage.setItem(LEGACY_FUTURE_KEY, id === "future" ? "true" : "false");
+      localStorage.setItem(NOCTURNE_FX_KEY, on ? "true" : "false");
     } catch {
       /* ignore */
     }
   }, []);
 
+  const toggleNocturneFx = useCallback(() => {
+    setNocturneFxState((prev) => {
+      const next = !prev;
+      applyNocturneFx(next);
+      try {
+        localStorage.setItem(NOCTURNE_FX_KEY, next ? "true" : "false");
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, []);
+
+  const setTheme = useCallback(
+    (id: ThemeId) => {
+      setThemeState(id);
+      applyTheme(id);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, id);
+        localStorage.setItem(
+          LEGACY_FUTURE_KEY,
+          id === "future" ? "true" : "false",
+        );
+      } catch {
+        /* ignore */
+      }
+
+      if (id === "nocturne") {
+        // Entering Nocturne turns atmosphere on by default
+        setNocturneFx(true);
+      } else {
+        setNocturneFx(false);
+      }
+    },
+    [setNocturneFx],
+  );
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, setTheme, nocturneFx, setNocturneFx, toggleNocturneFx }}
+    >
       <div className="relative z-10">{children}</div>
-      {/* Ambient overlays after content so blood/bats paint above opaque sections */}
       <ThemeAmbient />
     </ThemeContext.Provider>
   );

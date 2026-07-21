@@ -5,36 +5,40 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSiteTheme } from "@/components/ThemeEngine";
 
 /** Ignore ghost clicks that fall through when Design Modes closes. */
-const EXIT_ARM_MS = 900;
+const TOGGLE_ARM_MS = 900;
 
 export function NocturneChallengePanel() {
-  const { theme, setTheme } = useSiteTheme();
+  const { theme, nocturneFx, toggleNocturneFx } = useSiteTheme();
   const [announce, setAnnounce] = useState("");
-  const [exitArmed, setExitArmed] = useState(false);
+  const [armed, setArmed] = useState(false);
   const liveRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     if (theme !== "nocturne") {
-      setExitArmed(false);
+      setArmed(false);
       return;
     }
-    setExitArmed(false);
-    const timer = window.setTimeout(() => setExitArmed(true), EXIT_ARM_MS);
+    setArmed(false);
+    const timer = window.setTimeout(() => setArmed(true), TOGGLE_ARM_MS);
     return () => window.clearTimeout(timer);
   }, [theme]);
 
-  const exitNocturne = useCallback(() => {
-    if (!exitArmed) {
+  const onToggleFx = useCallback(() => {
+    if (!armed) {
       return;
     }
-    setTheme("core");
-    setAnnounce("Nocturne theme deactivated");
+    const turningOn = !nocturneFx;
+    toggleNocturneFx();
+    const nextLabel = turningOn
+      ? "Nocturne effects activated"
+      : "Nocturne effects deactivated";
+    setAnnounce(nextLabel);
     window.setTimeout(() => {
       if (liveRef.current) {
-        liveRef.current.textContent = "Nocturne theme deactivated";
+        liveRef.current.textContent = nextLabel;
       }
     }, 0);
-  }, [exitArmed, setTheme]);
+  }, [armed, nocturneFx, toggleNocturneFx]);
 
   if (theme !== "nocturne") {
     return null;
@@ -151,7 +155,7 @@ export function NocturneChallengePanel() {
                   bg-clip-text text-transparent
                 "
               >
-                You&apos;re in.
+                {nocturneFx ? "Effects on." : "Effects off."}
               </span>
             </h2>
 
@@ -161,17 +165,17 @@ export function NocturneChallengePanel() {
                 text-zinc-300/90 sm:text-lg
               "
             >
-              Crimson Nocturne is active — same product, darker world. Leave when
-              you want, or switch theme from Design Modes.
+              Stay in Nocturne. This button only toggles blood, bats and the
+              spider — not the theme skin. Switch themes from Design Modes.
             </p>
           </div>
 
           <div className="flex flex-col items-start md:items-end">
             <button
               type="button"
-              onClick={exitNocturne}
-              disabled={!exitArmed}
-              aria-pressed="true"
+              onClick={onToggleFx}
+              disabled={!armed}
+              aria-pressed={nocturneFx}
               className="
                 group inline-flex min-h-14 items-center gap-7
                 rounded-xl
@@ -194,7 +198,7 @@ export function NocturneChallengePanel() {
                 disabled:hover:translate-y-0
               "
             >
-              Back to Core
+              {nocturneFx ? "Disable effects" : "Enable effects"}
               <span
                 aria-hidden="true"
                 className="
@@ -212,9 +216,9 @@ export function NocturneChallengePanel() {
                 text-zinc-400 md:text-right
               "
             >
-              Same product. Same structure.
+              Blood · bats · spider
               <br />
-              Or pick another mode in Design Modes.
+              Theme stays Nocturne either way.
             </p>
           </div>
         </div>

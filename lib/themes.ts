@@ -72,6 +72,8 @@ export const SITE_THEMES: readonly SiteTheme[] = [
 
 export const THEME_STORAGE_KEY = "bit-tech-site-theme";
 export const LEGACY_FUTURE_KEY = "bit-tech-future-tech-mode";
+/** Blood / bats / spider overlay — independent of staying on Nocturne skin */
+export const NOCTURNE_FX_KEY = "bit-tech-nocturne-fx";
 export const THEME_SEGMENT_DEG = 360 / SITE_THEMES.length;
 
 export function themeIndex(id: ThemeId): number {
